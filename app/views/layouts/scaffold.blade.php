@@ -9,7 +9,7 @@
     <script type="text/javascript" src="/assets/js/jquery.mask.min.js"></script>
     <script type="text/javascript">
       $(function(){
-        $('.money').mask('000.000.000.000.000,00', {reverse: true});
+        $('.money').mask('000.000.000.000.000.00', {reverse: true});
         $(".date").datepicker({
           dateFormat: 'yy-mm-dd',
           dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],

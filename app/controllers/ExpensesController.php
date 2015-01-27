@@ -72,28 +72,10 @@ class ExpensesController extends BaseController {
 	{
 		$input = Input::all();
 		$validation = Validator::make($input, Expense::$rules);
-
-		echo '<pre>';
-		var_dump($input);
-		exit();
-
+		
 		if ($validation->passes())
 		{
 			$this->expense->create($input);
-
-			// check this expense is for a some dweller
-			if (!empty($input['id_dweller'])) {
-				DB::table('dwellers_expenses')
-					->insert(
-						array(
-							'id_dweller' => $input['id_dweller'],
-							'date_expense' => $input['date_expense'],
-							'value' => $input['value'],
-							'created_at' => 'NOW()',
-							'type_expense' => 1
-						)
-				);
-			}		
 
 			return Redirect::route('expenses.index')
 												->with('success', '<strong>Sucesso</strong> Registro inserido!');
