@@ -2,12 +2,13 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="/assets/css/jquery-ui.css" />
+    <script src="/assets/js/jquery-2.1.3.min.js"></script>
+    <script src="//assets/js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/assets/js/jquery.mask.min.js"></script>
     <script type="text/javascript">
+
       $(function(){
         $('.money').mask('000.000.000.000.000.00', {reverse: true});
         $(".date").datepicker({
