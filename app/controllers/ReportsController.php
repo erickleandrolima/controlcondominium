@@ -36,11 +36,13 @@ class ReportsController extends BaseController {
 		$expenses = DB::table('expenses')
 					->select('*')
 					->where('date_reference', $input['filter'])
+					->where('id_dweller', 0)
 					->get();
 		
 		$debtors = DB::table('dwellers_expenses')
 					->select('*')
 					->join('dwellers', 'dwellers_expenses.id_dweller', '=', 'dwellers.id')
+					->where('date_expense', '!=' , $input['filter'])
 					->where('type_expense', 0)
 					->where('status_expense', 0)
 					->orderBy('number_apartament')
@@ -60,7 +62,11 @@ class ReportsController extends BaseController {
 
 		$dwellers = Dweller::all();
 
-		return View::make('reports.mural', compact('expenses', 'debtors', 'month_reference', 'due_date', 'cost', 'dwellers'));
+		$html =  View::make('reports.mural', compact('expenses', 'debtors', 'month_reference', 'due_date', 'cost', 'dwellers'));
+
+		$pdf = App::make('dompdf');
+		$pdf->loadHtml($html);
+		return $pdf->stream();
 	}
 
 
