@@ -49,7 +49,11 @@
 		@foreach($expenses as $expense)
 			<tr>
 				<td>{{{ substr($expense->date_expense, 0, 7) }}}</td>
-				<td>R$ {{{ number_format(floor((float)$expense->total), 2, ',', '') }}}</td>
+        @if ($expense->status_expense == 0)
+				  <td>R$ {{{ number_format(floor((float)$expense->total - $expense->credit), 2, ',', '') }}}</td>
+        @else  
+          <td>R$ {{{ number_format(floor((float)$expense->total), 2, ',', '') }}}</td>
+        @endif  
 				<td>
 					@if ($expense->status_expense == 0)
             			{{ link_to('expense/' . $dweller->id . '/'. $expense->date_expense .'/pay' , 'Pay', 'class="pay cast btn btn-danger"') }}
@@ -58,7 +62,7 @@
 					@endif
 				</td>
 				<td>
-          {{ Form::open(array( 'class' => 'parcialPay', 'style' => 'display: inline-block;', 'method' => 'POST', 'action' => array('ExpensesController@parcialPay', $dweller->id.'/'.$expense->date_expense))) }}
+          {{ Form::open(array( 'class' => 'parcialPay', 'style' => 'display: inline-block;', 'method' => 'POST', 'action' => array('ExpensesController@parcialPay', $expense->id . '/' . $dweller->id . '/'. $expense->credit))) }}
             {{ Form::text('value', Input::old('value'), array( 'style' => 'margin-bottom:10px', 'class'=>'date form-control money', 'placeholder'=>'Value')) }}
             {{ Form::submit('Parcial Pay', array('class' => 'btn btn-warning')) }}
           {{ Form::close() }}

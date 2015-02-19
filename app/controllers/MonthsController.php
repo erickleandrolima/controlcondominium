@@ -156,7 +156,7 @@ class MonthsController extends BaseController {
 			foreach (Dweller::all() as $dweller):
 
 				//throw expenses for each dweller
-				DB::table('dwellers_expenses')
+				DB::table('dweller_expenses')
 					->insert(
 						array(
 							'id_dweller' => $dweller->id,
@@ -176,7 +176,7 @@ class MonthsController extends BaseController {
 
 					foreach ($extras as $extra):
 
-						DB::table('dwellers_expenses')
+						DB::table('dweller_expenses')
 						->insert(
 							array(
 								'id_dweller' => $dweller->id,

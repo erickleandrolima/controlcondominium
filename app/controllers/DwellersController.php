@@ -70,30 +70,28 @@ class DwellersController extends BaseController {
 	{
 		$dweller = $this->dweller->findOrFail($id);
 
-		$increase = DB::table('dwellers_expenses')
-					->select(DB::raw('sum(value) as total'))
-					->where('id_dweller', $id)
-					->where('status_expense', 0)
-					->where('type_expense', 0)
-					->get();
+		$increase = DB::table('dweller_expenses')
+							->select(DB::raw('sum(value) as total'))
+							->where('id_dweller', $id)
+							->where('status_expense', 0)
+							->where('type_expense', 0)
+							->get();
 
-		$decrease = DB::table('dwellers_expenses')
-					->select(DB::raw('sum(value) as total'))
-					->where('id_dweller', $id)
-					->where('status_expense', 1)
-					->where('type_expense', 1)
-					->get();					
+		$decrease = DB::table('dweller_expenses')
+							->select(DB::raw('sum(credit) as total'))
+							->where('id_dweller', $id)
+							->get();					
 
 		$balance = floor($increase[0]->total - $decrease[0]->total);
 
-		$sum = DB::table('dwellers_expenses')
+		$sum = DB::table('dweller_expenses')
 					->select(DB::raw('sum(value) as total'))
 					->where('id_dweller', $id)
 					->where('type_expense', 0)
 					->where('type_expense', 1)
 					->get();
 
-		$expenses = DB::table('dwellers_expenses')
+		$expenses = DB::table('dweller_expenses')
 								->select(DB::raw('*, sum(value) as total'))
 								->where('id_dweller', $id)
 								->groupBy('date_expense')
@@ -171,14 +169,14 @@ class DwellersController extends BaseController {
 	{
 		$dweller = $this->dweller->findOrFail($id);
 
-		$increase = DB::table('dwellers_expenses')
+		$increase = DB::table('dweller_expenses')
 					->select(DB::raw('sum(value) as total'))
 					->where('id_dweller', $id)
 					->where('status_expense', 0)
 					->where('type_expense', 0)
 					->get();
 
-		$decrease = DB::table('dwellers_expenses')
+		$decrease = DB::table('dweller_expenses')
 					->select(DB::raw('sum(value) as total'))
 					->where('id_dweller', $id)
 					->where('status_expense', 1)
@@ -187,13 +185,13 @@ class DwellersController extends BaseController {
 
 		$balance = $increase[0]->total - $decrease[0]->total;
 
-		$sum = DB::table('dwellers_expenses')
+		$sum = DB::table('dweller_expenses')
 					->select(DB::raw('sum(value) as total'))
 					->where('id_dweller', $id)
 					->where('type_expense', 0)
 					->get();
 
-		$expenses = DB::table('dwellers_expenses')
+		$expenses = DB::table('dweller_expenses')
 					->select(DB::raw('*'))
 					->where('id_dweller', $id)
 					->where('status_expense', 1)

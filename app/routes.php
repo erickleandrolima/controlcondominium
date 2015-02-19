@@ -23,7 +23,7 @@ Route::get('expense/{id}/{date}/pay', 'ExpensesController@pay');
 
 Route::get('dweller/{id}/history', 'DwellersController@history');
 
-Route::post('expense/parcialPay/{id}/{date}', 'ExpensesController@parcialPay');
+Route::post('expense/parcialPay/{idExpense}/{idDweller}/{credit}', 'ExpensesController@parcialPay');
 
 Route::resource('categories', 'CategoriesController');
 

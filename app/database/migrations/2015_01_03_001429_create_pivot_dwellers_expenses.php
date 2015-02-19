@@ -12,7 +12,7 @@ class CreatePivotDwellersExpenses extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('dwellers_expenses', function(Blueprint $table) {
+		Schema::create('dweller_expenses', function(Blueprint $table) {
 			$table->increments('id');
 			$table->integer('id_dweller');
 			$table->date('date_expense');
@@ -30,7 +30,7 @@ class CreatePivotDwellersExpenses extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('dwellers_expenses');
+		Schema::drop('dweller_expenses');
 	}
 
 }

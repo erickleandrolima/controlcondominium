@@ -39,9 +39,9 @@ class ReportsController extends BaseController {
 					->where('id_dweller', 0)
 					->get();
 		
-		$debtors = DB::table('dwellers_expenses')
+		$debtors = DB::table('dweller_expenses')
 					->select('*')
-					->join('dwellers', 'dwellers_expenses.id_dweller', '=', 'dwellers.id')
+					->join('dwellers', 'dweller_expenses.id_dweller', '=', 'dwellers.id')
 					->where('date_expense', '!=' , $input['filter'])
 					->where('type_expense', 0)
 					->where('status_expense', 0)

@@ -8,4 +8,5 @@ class Dweller extends Eloquent {
 		'situation' => 'required',
 		'number_apartament' => 'required'
 	);
+
 }

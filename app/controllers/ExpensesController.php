@@ -210,7 +210,7 @@ class ExpensesController extends BaseController {
 
 	public function pay($id, $date)
 	{
-		DB::table('dwellers_expenses')
+		DB::table('dweller_expenses')
 		->where('id_dweller', $id)
 		->where('date_expense', $date)
 		->update(array('status_expense' => 1, 'updated_at' => DB::raw('NOW()')));
@@ -218,22 +218,38 @@ class ExpensesController extends BaseController {
 		return Redirect::route('dwellers.show', $id);
 	}
 
-	public function parcialPay($id, $date)
+	public function parcialPay($idExpense, $idDweller, $credit)
 	{
 		$input =  array_except(Input::all(), '_method');
+		$credit += $input['value'];
+		if($this->checkParcialPay($idExpense, $input['value'])):
+			DB::table('dweller_expenses')
+			->where('id', $idExpense)
+			->update(array('credit' => $credit));
+			return Redirect::route('dwellers.show', $idDweller)
+						 ->with('success', '<strong>Sucesso</strong> pagamento parcial realizado!');
+		else:
+			return Redirect::route('dwellers.show', $idDweller)
+						->with('message', '<strong>Erro</strong> o valor inserido é maior que o devido!');
+		endif;	
+	}
 
-		DB::table('dwellers_expenses')->insert(
-			array(
-				'id_dweller' => $id, 
-				'date_expense' => $date, 
-				'value' => $input['value'], 
-				'type_expense' => 1, 
-				'status_expense' => 1,
-				'updated_at' => DB::raw('NOW()'),
-			)
-		);
+	public function checkParcialPay($idExpense, $value)
+	{
+		$expense = DB::table('dweller_expenses')
+							->where('id', $idExpense)
+							->get();
+		
+		$balance = floor($expense[0]->value - $expense[0]->credit);
+		$value = floor($value);
 
-		return Redirect::route('dwellers.show', $id);
+		if ($value > $balance):
+			return false;
+			elseif(($value - $balance) == 0):
+				$this->pay($expense[0]->id_dweller, $expense[0]->date_expense);							
+		endif;
+
+		return true;
 	}
 
 }
