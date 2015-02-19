@@ -42,7 +42,6 @@ class ReportsController extends BaseController {
 		$debtors = DB::table('dweller_expenses')
 					->select('*')
 					->join('dwellers', 'dweller_expenses.id_dweller', '=', 'dwellers.id')
-					->where('date_expense', '!=' , $input['filter'])
 					->where('type_expense', 0)
 					->where('status_expense', 0)
 					->orderBy('number_apartament')

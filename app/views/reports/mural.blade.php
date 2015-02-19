@@ -58,14 +58,9 @@ th { text-align: left;}
 .table-condensed > tfoot > tr > td {
   padding: 5px;
 }
-@page {margin-top:  0px;}
-.header {top: -50px; position: fixed; display: table;}
-.footer {bottom: 0px; position: fixed;}
 </style>
 </head>
 <body>
-
-<header class="header"> <h1>Condominio</h1> </header>
 
 <div class="container">
     <div class="row">
@@ -137,7 +132,7 @@ th { text-align: left;}
               <tr>
                 <td> <strong> <?php echo $debtor->number_apartament ?> </strong> </td>
                 <td> <?php echo BaseController::getMonthNameExtension($debtor->date_expense, 3) ?> </td>
-                <td> <?php echo number_format(floor((float)$debtor->value), 2, ',', '') ?> </td>
+                <td> <?php echo number_format(floor((float)$debtor->value - $debtor->credit), 2, ',', '') ?> </td>
               </tr>
             <?php endforeach; ?>
           </tbody>
