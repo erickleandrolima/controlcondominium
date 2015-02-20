@@ -21,7 +21,10 @@ class ExpensesController extends BaseController {
 	 */
 	public function index()
 	{
-		$expenses = Expense::orderBy('date_reference', 'desc')->get();
+		$expenses = DB::table(DB::Raw('expenses e LEFT JOIN months m ON m.id = e.month_id'))
+									->select(DB::Raw('e.*, m.month_name'))
+									->orderBy('date_reference', 'desc')
+							 		->get();
 
 		return View::make('expenses.index', compact('expenses'));
 	}
@@ -134,12 +137,19 @@ class ExpensesController extends BaseController {
     		$dwellers[$dweller->id] = $dweller->name;
 		}
 
+		// Catch the month id
+		$month = DB::table('months')
+							->where('month_reference', $expense['date_reference'])
+							->get(); 
+
+		$month_id = $month[0]->id;
+
 		if (is_null($expense))
 		{
 			return Redirect::route('expenses.index');
 		}
 
-		return View::make('expenses.edit', compact('expense', 'months', 'categories', 'dwellers'));
+		return View::make('expenses.edit', compact('expense', 'months', 'categories', 'dwellers', 'month_id'));
 	}
 
 	/**
@@ -240,8 +250,8 @@ class ExpensesController extends BaseController {
 							->where('id', $idExpense)
 							->get();
 		
-		$balance = floor($expense[0]->value - $expense[0]->credit);
-		$value = floor($value);
+		$balance = ceil($expense[0]->value - $expense[0]->credit);
+		$value = ceil($value);
 
 		if ($value > $balance):
 			return false;

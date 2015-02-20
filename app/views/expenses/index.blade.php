@@ -12,11 +12,11 @@
     </div>
 @endif
 
-@if ($expenses->count())
+@if (count($expenses) > 0)
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th>Data</th>
+				<th>Mês de Referência</th>
 				<th>Descrição</th>
 				<th>Valor</th>
 				<th>&nbsp;</th>
@@ -26,9 +26,9 @@
 		<tbody>
 			@foreach ($expenses as $expense)
 				<tr>
-					<td>{{{ $expense->date_expense }}}</td>
+					<td>{{{ $expense->month_name }}}</td>
 					<td>{{{ $expense->description }}}</td>
-					<td>{{{ number_format(floor((float)$expense->value), 2, ',', '') }}}</td>
+					<td>{{{ number_format(ceil((float)$expense->value), 2, ',', '') }}}</td>
                     <td>
                         {{ Form::open(array('style' => 'display: inline-block;', 'method' => 'DELETE', 'route' => array('expenses.destroy', $expense->id))) }}
                             {{ Form::submit('Excluir', array('class' => 'btn btn-danger')) }}

@@ -43,6 +43,7 @@
             {{ Form::label('Mês de Referência', 'Mês de Referência:', array('class'=>'col-md-2 control-label')) }}
             <div class="col-sm-10">
                  {{Form::select('date_reference', $months, Input::old('date_reference'))}}
+                 {{ Form::hidden('month_id', $month_id) }}
             </div>
         </div>
 
