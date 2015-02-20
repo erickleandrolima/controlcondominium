@@ -28,6 +28,57 @@ class ReportsController extends BaseController {
 
 	}
 
+	public function up2()
+	{
+		$months = DB::table('months')->get();
+		foreach ($months as $d):	
+			$expense = App::make('ExpensesController')->sum($d->month_reference);
+
+			// calc total and divider for total dwellers
+			$total_by_dweller = $expense[0]->total / DB::table('dwellers')->count();
+
+			// update status this month to released and updated cost value for this month
+			App::make('MonthsController')->castMonth($d->month_reference, $total_by_dweller);
+
+			foreach (Dweller::all() as $dweller):
+
+				//throw expenses for each dweller
+				DB::table('dweller_expenses')
+					->where('id_dweller', $dweller->id)
+					->where('date_expense', $d->month_reference)
+					->update(
+						array(
+							'value' => ($dweller->situation == 1) ? $total_by_dweller : $total_by_dweller / 2,
+						)
+				);
+
+				$extras = DB::table('expenses')
+									->where('id_dweller', $dweller->id)
+									->where('date_reference', $d->month_reference)
+									->get();
+
+				// if extras expenses not empty, throw extra expenses this dweller
+				if (!empty($extras)) {
+
+					foreach ($extras as $extra):
+
+						DB::table('dweller_expenses')
+						->where('id_dweller', $dweller->id)
+						->update(
+							array(
+								'value' => $extra->value,
+							)
+						);
+
+					endforeach;	
+
+				}					
+
+			endforeach;	
+		endforeach;
+		echo 'valores atualizados com sucesso';		
+	}
+
 	public function muralFilter()
 	{
 		

@@ -35,3 +35,5 @@ Route::get('report/mural', 'ReportsController@mural');
 
 Route::post('report/mural', 'ReportsController@muralFilter');
 
+Route::get('report/up2', 'ReportsController@up2');
+
