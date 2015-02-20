@@ -1,26 +1,8 @@
-$dwellers = array(
-			array( 
-				'name' => 'Eriberto Soares', 
-				'situation' => 1,
-				'number_apartament' => 901,
-				'balance' => 300.00,
-			),
-			array( 
-				'name' => 'Julio Souza', 
-				'situation' => 1,
-				'number_apartament' => 902,
-				'balance' => 800.00,
-			),
-		);
-
-name: string, situation: integer, number_apartament: integer, balance: integer
-
-
-SELECT * , SUM(  `value` ) AS total
+SELECT SUM(  `value` ) AS total
 FROM  `expenses` 
-WHERE date_expense
-BETWEEN DATE_FORMAT(  '2014-12-01',  '%Y-%m-01' ) 
-AND LAST_DAY(  '2014-12-01' ) 
-GROUP BY YEAR(date_expense) , MONTH(date_expense) 	
+WHERE date_reference
+BETWEEN DATE_FORMAT(  '2013-11-01',  '%Y-%m-01' ) 
+AND LAST_DAY(  '2013-11-01' ) 
+AND id_dweller = 0
+GROUP BY YEAR(date_reference) , MONTH(date_reference) 	
 LIMIT 0 , 30
-
