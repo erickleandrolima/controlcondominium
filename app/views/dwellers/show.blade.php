@@ -50,9 +50,9 @@
 			<tr>
 				<td>{{{ substr($expense->date_expense, 0, 7) }}}</td>
         @if ($expense->status_expense == 0)
-				  <td>R$ {{{ number_format(floor((float)$expense->total - $expense->credit), 2, ',', '') }}}</td>
+				  <td>R$ {{{ number_format(ceil((float)$expense->total - $expense->credit), 2, ',', '') }}}</td>
         @else  
-          <td>R$ {{{ number_format(floor((float)$expense->total), 2, ',', '') }}}</td>
+          <td>R$ {{{ number_format(ceil((float)$expense->total), 2, ',', '') }}}</td>
         @endif  
 				<td>
 					@if ($expense->status_expense == 0)
@@ -71,12 +71,12 @@
 		@endforeach	
     <tr>
       <td colspan="1" align="right"> 
-        <strong>Total: R$ {{{ number_format(floor((float)$sum[0]->total), 2, ',' ,'')  }}}</strong> 
+        <strong>Total: R$ {{{ number_format(ceil((float)$sum[0]->total), 2, ',' ,'')  }}}</strong> 
       </td>
       <td colspan="1" align="right"> 
         <strong>Saldo devedor: R$ 
           @if($balance > 0) 
-            {{{ number_format(floor((float)$balance), 2, ',', '') }}}
+            {{{ number_format(ceil((float)$balance), 2, ',', '') }}}
           @else
             0,00
           @endif 

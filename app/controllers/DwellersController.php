@@ -82,7 +82,7 @@ class DwellersController extends BaseController {
 							->where('id_dweller', $id)
 							->get();					
 
-		$balance = floor($increase[0]->total - $decrease[0]->total);
+		$balance = ceil($increase[0]->total - $decrease[0]->total);
 
 		$sum = DB::table('dweller_expenses')
 					->select(DB::raw('sum(value) as total'))

@@ -72,7 +72,7 @@ th { text-align: left;}
           </h1>
 
           <h2>
-            Valor: <?php echo number_format(floor((float)$cost), 2, ',', '')?>
+            Valor: <?php echo number_format(ceil((float)$cost), 2, ',', '')?>
           </h2>
 
           <ul>
@@ -81,7 +81,7 @@ th { text-align: left;}
 
               <li> 
                 <?php echo $expense->description ?> : 
-                <strong> <?php echo number_format(floor((float)$expense->value), 2, ',', '') ?> </strong> 
+                <strong> <?php echo number_format(ceil((float)$expense->value), 2, ',', '') ?> </strong> 
                 <?php echo strftime("%d/%m/%Y", strtotime( $expense->date_expense )) ?> 
               </li>
 
@@ -132,7 +132,7 @@ th { text-align: left;}
               <tr>
                 <td> <strong> <?php echo $debtor->number_apartament ?> </strong> </td>
                 <td> <?php echo BaseController::getMonthNameExtension($debtor->date_expense, 3) ?> </td>
-                <td> <?php echo number_format(floor((float)$debtor->value - $debtor->credit), 2, ',', '') ?> </td>
+                <td> <?php echo number_format(ceil((float)$debtor->value - $debtor->credit), 2, ',', '') ?> </td>
               </tr>
             <?php endforeach; ?>
           </tbody>
