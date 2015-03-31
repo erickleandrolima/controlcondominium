@@ -19,6 +19,8 @@ Route::resource('months', 'MonthsController');
 
 Route::get('month/{date}/cast', 'MonthsController@cast');
 
+Route::get('month/{date}/rebase', 'MonthsController@rebaseCalc');
+
 Route::get('expense/{id}/{date}/pay', 'ExpensesController@pay');
 
 Route::get('dweller/{id}/history', 'DwellersController@history');

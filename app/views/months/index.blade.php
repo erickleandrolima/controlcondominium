@@ -40,6 +40,9 @@
 						{{ link_to_route('months.edit', 'Editar', array($month->id), array('class' => 'btn btn-info')) }}
 						@if ($month->casted == 0)
 							{{ link_to('month/'. $month->month_reference .'/cast', 'Lançar', 'class="cast btn btn-warning"') }}
+						@endif
+						@if ($month->casted == 1)
+							{{ link_to('month/'. $month->month_reference .'/rebase', 'Recalcular', 'class="cast btn btn-warning"') }}
 						@endif	
 					</td>
 				</tr>
