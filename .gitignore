@@ -3,3 +3,4 @@ vendor/
 /bootstrap/compiled.php
 .env.*.php
 .env.php
+app/config/database.php

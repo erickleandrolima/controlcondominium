@@ -63,7 +63,7 @@
 				</td>
 				<td>
           {{ Form::open(array( 'class' => 'parcialPay', 'style' => 'display: inline-block;', 'method' => 'POST', 'action' => array('ExpensesController@parcialPay', $expense->id . '/' . $dweller->id . '/'. $expense->credit))) }}
-            {{ Form::text('value', Input::old('value'), array( 'style' => 'margin-bottom:10px', 'class'=>'date form-control money', 'placeholder'=>'Value')) }}
+            {{ Form::text('value', Input::old('value'), array( 'style' => 'margin-bottom:10px', 'class'=>'form-control money', 'placeholder'=>'Value')) }}
             {{ Form::submit('Parcial Pay', array('class' => 'btn btn-warning')) }}
           {{ Form::close() }}
 				</td>

@@ -55,7 +55,7 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'rty',
+			'database'  => 'condominio',
 			'username'  => 'root',
 			'password'  => 'q1w2e3',
 			'charset'   => 'utf8',
