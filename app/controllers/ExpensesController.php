@@ -75,7 +75,13 @@ class ExpensesController extends BaseController {
 	{
 		$input = Input::all();
 		$validation = Validator::make($input, Expense::$rules);
-		
+
+		$month = DB::table('months')
+ 					->where('month_reference', $input['date_reference'])
+					->get();
+					
+		$input['month_id'] = $month[0]->id;					
+
 		if ($validation->passes())
 		{
 			$this->expense->create($input);
@@ -113,7 +119,10 @@ class ExpensesController extends BaseController {
 	{
 		$expense = $this->expense->find($id);
 
-		$Allmonths = DB::table('months')->select('*')->get();
+		$Allmonths = DB::table('months')
+					 ->select('*')
+					 ->orderBy('month_reference', 'desc')
+					 ->get();
 
 		$months[0] = 'Selecione o mês de referência';
 
@@ -139,8 +148,8 @@ class ExpensesController extends BaseController {
 
 		// Catch the month id
 		$month = DB::table('months')
-							->where('month_reference', $expense['date_reference'])
-							->get(); 
+				 ->where('month_reference', $expense['date_reference'])
+				 ->get(); 
 
 		$month_id = $month[0]->id;
 
@@ -167,6 +176,7 @@ class ExpensesController extends BaseController {
 		{
 			$expense = $this->expense->find($id);
 			$expense->update($input);
+			$this->updateMonthId($input, $id);
 
 			return Redirect::route('expenses.show', $id)
 											->with('success', '<strong>Sucesso</strong> Registro atualizado!');
@@ -258,6 +268,19 @@ class ExpensesController extends BaseController {
 			elseif(($value - $balance) == 0):
 				$this->pay($expense[0]->id_dweller, $expense[0]->date_expense);							
 		endif;
+
+		return true;
+	}
+
+	public function updateMonthId($expense, $id)
+	{
+		$month = DB::table('months')
+		  			->where('month_reference', $expense['date_reference'])
+		  			->get();
+		
+		DB::table('expenses')
+		->where('id', $id)
+		->update(['month_id' => $month[0]->id]);  			
 
 		return true;
 	}
