@@ -11,6 +11,8 @@
 |
 */
 
+Route::get('/', 'BaseController@index');
+
 Route::resource('dwellers', 'DwellersController');
 
 Route::resource('expenses', 'ExpensesController');

@@ -17,6 +17,11 @@ class BaseController extends Controller {
 		'12' => 'Dezembro',
 	);
 
+	public function index()
+	{
+		return View::make('index');
+	}
+
 	/**
 	 * Setup the layout used by the controller.
 	 *

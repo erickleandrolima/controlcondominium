@@ -1,8 +1,0 @@
-SELECT SUM(  `value` ) AS total
-FROM  `expenses` 
-WHERE date_reference
-BETWEEN DATE_FORMAT(  '2013-11-01',  '%Y-%m-01' ) 
-AND LAST_DAY(  '2013-11-01' ) 
-AND id_dweller = 0
-GROUP BY YEAR(date_reference) , MONTH(date_reference) 	
-LIMIT 0 , 30
