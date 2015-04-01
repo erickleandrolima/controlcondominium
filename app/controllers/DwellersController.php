@@ -11,6 +11,7 @@ class DwellersController extends BaseController {
 
 	public function __construct(Dweller $dweller)
 	{
+		$this->beforeFilter('auth');
 		$this->dweller = $dweller;
 	}
 

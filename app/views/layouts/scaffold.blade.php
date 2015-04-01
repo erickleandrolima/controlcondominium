@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/jquery-ui.css" />
     <script src="/assets/js/jquery-2.1.3.min.js"></script>
     <script src="/assets/js/jquery-ui.min.js"></script>
@@ -51,6 +52,9 @@
         <li><a href="/expenses">Despesas</a></li>
         <li><a href="/categories">Categorias</a></li>
         <li><a href="/reports">Relatórios</a></li>
+        @if(Auth::check())
+          <li><a href="/users/logout">Sair do sistema</a></li>
+        @endif
       </ul>
     </div>  <!-- collapse navbar -->
   </div> <!-- container-fluid -->

@@ -2,6 +2,11 @@
 
 class ReportsController extends BaseController {
 
+	public function __construct()
+	{
+		$this->beforeFilter('auth');
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -26,18 +31,6 @@ class ReportsController extends BaseController {
 	
 		return View::make('reports.filter', compact('select', 'action'));
 
-	}
-
-	public function up2()
-	{
-		$expenses = DB::table('expenses')->get();
-		foreach ($expenses as $e):	
-			$current = DB::table('months')->where('month_reference', $e->date_reference)->get();
-			DB::table('expenses')
-			->where('date_reference', $current[0]->month_reference)
-			->update(['month_id' => $current[0]->id]);
-		endforeach;
-		echo 'ids dos meses atualizados sucesso';		
 	}
 
 	public function muralFilter()

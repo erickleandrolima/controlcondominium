@@ -1,1 +1,4 @@
-.tree-columns{  -webkit-column-count: 3; -moz-column-count: 3; column-count: 3; }
+.form-signup, .form-signin {
+    width: 400px;
+    margin: 0 auto;
+}

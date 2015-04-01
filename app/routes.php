@@ -13,6 +13,8 @@
 
 Route::get('/', 'BaseController@index');
 
+Route::controller('users', 'UsersController');
+
 Route::resource('dwellers', 'DwellersController');
 
 Route::resource('expenses', 'ExpensesController');

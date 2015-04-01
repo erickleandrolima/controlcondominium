@@ -11,6 +11,7 @@ class CategoriesController extends BaseController {
 
 	public function __construct(Category $category)
 	{
+		$this->beforeFilter('auth');
 		$this->category = $category;
 	}
 

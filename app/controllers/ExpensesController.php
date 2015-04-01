@@ -11,6 +11,7 @@ class ExpensesController extends BaseController {
 
 	public function __construct(Expense $expense)
 	{
+		$this->beforeFilter('auth');
 		$this->expense = $expense;
 	}
 

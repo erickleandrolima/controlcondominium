@@ -11,6 +11,7 @@ class MonthsController extends BaseController {
 
 	public function __construct(Month $month)
 	{
+        $this->beforeFilter('auth');
 		$this->month = $month;
 	}
 
