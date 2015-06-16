@@ -40,3 +40,8 @@ Route::get('reports', 'ReportsController@index');
 Route::get('report/mural', 'ReportsController@mural');
 
 Route::post('report/mural', 'ReportsController@muralFilter');
+
+Route::get('report/debtsDwellers', 'ReportsController@debtsDwellers');
+
+Route::post('report/debtsDwellers', 'ReportsController@debtsDwellersFilter');
+
