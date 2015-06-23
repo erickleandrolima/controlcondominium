@@ -2,9 +2,9 @@
 
 @section('main')
 
-<h1>All Dwellers</h1>
+<h1> {{ Lang::get('dwellers.title') }} </h1>
 
-<p>{{ link_to_route('dwellers.create', 'Add New Dweller', null, array('class' => 'btn btn-lg btn-success')) }}</p>
+<p>{{ link_to_route('dwellers.create', Lang::get('dwellers.add') , null, array('class' => 'btn btn-lg btn-success')) }}</p>
 
 @if(Session::has('success'))
     <div class="alert alert-success">
@@ -16,9 +16,9 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th>Name</th>
-				<th>Situation</th>
-				<th>Number_apartament</th>
+				<th>{{ Lang::get('dwellers.name') }}</th>
+				<th>{{ Lang::get('dwellers.situation') }}</th>
+				<th>{{ Lang::get('dwellers.numberApartament') }}</th>
 				<th>&nbsp;</th>
 			</tr>
 		</thead>
@@ -31,17 +31,17 @@
 					<td>{{{ $dweller->number_apartament }}}</td>
                     <td>
                         {{ Form::open(array('style' => 'display: inline-block;', 'method' => 'DELETE', 'route' => array('dwellers.destroy', $dweller->id))) }}
-                            {{ Form::submit('Delete', array('class' => 'btn btn-danger')) }}
+                            {{ Form::submit(Lang::get('app.delete'), array('class' => 'btn btn-danger')) }}
                         {{ Form::close() }}
-                        {{ link_to_route('dwellers.edit', 'Edit', array($dweller->id), array('class' => 'btn btn-info')) }}
-                      	{{ link_to_route('dwellers.show', 'Show expenses', $dweller->id, array('class' => 'btn btn-warning')) }}
+                        {{ link_to_route('dwellers.edit', Lang::get('app.edit'), array($dweller->id), array('class' => 'btn btn-info')) }}
+                      	{{ link_to_route('dwellers.show', Lang::get('dwellers.show'), $dweller->id, array('class' => 'btn btn-warning')) }}
                     </td>
 				</tr>
 			@endforeach
 		</tbody>
 	</table>
 @else
-	There are no dwellers
+	{{ Lang::get('app.notFoundData') }}
 @endif
 
 @stop

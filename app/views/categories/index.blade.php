@@ -2,9 +2,9 @@
 
 @section('main')
 
-<h1>All Categories</h1>
+<h1>{{ Lang::get('categories.title') }}</h1>
 
-<p>{{ link_to_route('categories.create', 'Add New Category', null, array('class' => 'btn btn-lg btn-success')) }}</p>
+<p>{{ link_to_route('categories.create', Lang::get('categories.add'), null, array('class' => 'btn btn-lg btn-success')) }}</p>
 
 @if(Session::has('success'))
     <div class="alert alert-success">
@@ -16,7 +16,7 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th>Name</th>
+				<th>{{ Lang::get('categories.name') }}</th>
 				<th>&nbsp;</th>
 			</tr>
 		</thead>
@@ -27,16 +27,16 @@
 					<td>{{{ $category->name }}}</td>
                     <td>
                         {{ Form::open(array('style' => 'display: inline-block;', 'method' => 'DELETE', 'route' => array('categories.destroy', $category->id))) }}
-                            {{ Form::submit('Delete', array('class' => 'btn btn-danger')) }}
+                            {{ Form::submit(Lang::get('app.delete'), array('class' => 'btn btn-danger')) }}
                         {{ Form::close() }}
-                        {{ link_to_route('categories.edit', 'Edit', array($category->id), array('class' => 'btn btn-info')) }}
+                        {{ link_to_route('categories.edit', Lang::get('app.edit') , array($category->id), array('class' => 'btn btn-info')) }}
                     </td>
 				</tr>
 			@endforeach
 		</tbody>
 	</table>
 @else
-	There are no categories
+	{{ Lang::get('app.notFoundData') }}
 @endif
 
 @stop

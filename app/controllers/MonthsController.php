@@ -231,6 +231,4 @@ class MonthsController extends BaseController {
 		return Redirect::route('months.index')
 						->with('success', '<strong>Sucesso</strong> Recalcule o mês escolhido!');
 	}
-
-	
 }

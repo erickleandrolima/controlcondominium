@@ -2,9 +2,9 @@
 
 @section('main')
 
-<h1>Despesas</h1>
+<h1>{{ Lang::get('expenses.title') }}</h1>
 
-<p>{{ link_to_route('expenses.create', 'Adicionar Despesa', null, array('class' => 'btn btn-lg btn-success')) }}</p>
+<p>{{ link_to_route('expenses.create', Lang::get('expenses.add'), null, array('class' => 'btn btn-lg btn-success')) }}</p>
 
 @if(Session::has('success'))
     <div class="alert alert-success">
@@ -16,9 +16,9 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th>Mês de Referência</th>
-				<th>Descrição</th>
-				<th>Valor</th>
+				<th>{{ Lang::get('expenses.monthReference') }}</th>
+				<th>{{ Lang::get('expenses.description') }}</th>
+				<th>{{ Lang::get('expenses.value') }}</th>
 				<th>&nbsp;</th>
 			</tr>
 		</thead>
@@ -31,16 +31,16 @@
 					<td>{{{ number_format(ceil((float)$expense->value), 2, ',', '') }}}</td>
                     <td>
                         {{ Form::open(array('style' => 'display: inline-block;', 'method' => 'DELETE', 'route' => array('expenses.destroy', $expense->id))) }}
-                            {{ Form::submit('Excluir', array('class' => 'btn btn-danger')) }}
+                            {{ Form::submit(Lang::get('app.delete'), array('class' => 'btn btn-danger')) }}
                         {{ Form::close() }}
-                        {{ link_to_route('expenses.edit', 'Editar', array($expense->id), array('class' => 'btn btn-info')) }}
+                        {{ link_to_route('expenses.edit', Lang::get('app.edit'), array($expense->id), array('class' => 'btn btn-info')) }}
                     </td>
 				</tr>
 			@endforeach
 		</tbody>
 	</table>
 @else
-	There are no expenses
+	{{ Lang::get('app.notFoundData') }}
 @endif
 
 @stop
