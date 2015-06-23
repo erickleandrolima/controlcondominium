@@ -31,6 +31,8 @@ Route::get('dweller/{id}/history', 'DwellersController@history');
 
 Route::post('expense/parcialPay/{idExpense}/{idDweller}/{credit}', 'ExpensesController@parcialPay');
 
+Route::post('expense/reversePayment/{idDweller}/{date}', 'ExpensesController@reversePayment');
+
 Route::resource('categories', 'CategoriesController');
 
 Route::resource('categories', 'CategoriesController');

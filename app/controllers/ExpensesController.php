@@ -286,4 +286,25 @@ class ExpensesController extends BaseController {
 		return true;
 	}
 
+	/**
+	 * reverse payment for determine month
+	 *
+	 * @param  id    $dwellerId
+	 * @param  date  $date
+	 * @return Response
+	 */
+
+	public function reversePayment($dwellerId, $date)
+	{
+		DB::table('dweller_expenses')->where('date_expense', $date)
+									 ->where('id_dweller', $dwellerId)
+									 ->update(array(
+									 	'status_expense' => 0,
+									 	'credit' => 0
+								 	  ));
+
+		return Redirect::route('dwellers.show', $dwellerId)
+						->with('success', '<strong>Sucesso</strong> Pagamento estornado com sucesso!');
+	}
+
 }

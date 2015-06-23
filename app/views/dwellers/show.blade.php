@@ -38,10 +38,11 @@
 <table id="expenses" class="table table-striped">
 	<thead>
 		<tr>
-			<th>Month</th>
-			<th>Value</th>
+			<th>Mês</th>
+			<th>Valor</th>
 			<th>Status</th>
-			<th>Parcial Pay</th>
+      <th>Pagamento Parcial</th>
+			<th>Estornar pagamento</th>
 		</tr>
 	</thead>
 
@@ -64,9 +65,15 @@
 				<td>
           {{ Form::open(array( 'class' => 'parcialPay', 'style' => 'display: inline-block;', 'method' => 'POST', 'action' => array('ExpensesController@parcialPay', $expense->id . '/' . $dweller->id . '/'. $expense->credit))) }}
             {{ Form::text('value', Input::old('value'), array( 'style' => 'margin-bottom:10px', 'class'=>'form-control money', 'placeholder'=>'Value')) }}
-            {{ Form::submit('Parcial Pay', array('class' => 'btn btn-warning')) }}
+            {{ Form::submit('Pagamento parcial', array('class' => 'btn btn-warning')) }}
           {{ Form::close() }}
 				</td>
+        <td>
+          {{ Form::open(array( 'style' => 'display: inline-block;', 'method' => 'POST', 'action' => array('ExpensesController@reversePayment', 
+            $dweller->id . '/' . $expense->date_expense))) }}
+            {{ Form::submit('Estornar pagamento', array('class' => 'btn btn-warning')) }}
+          {{ Form::close() }}
+        </td>
 			</tr>
 		@endforeach	
     <tr>
