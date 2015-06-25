@@ -22,7 +22,7 @@ class CategoriesController extends BaseController {
 	 */
 	public function index()
 	{
-		$categories = $this->category->all();
+		$categories = Category::simplePaginate(10);
 
 		return View::make('categories.index', compact('categories'));
 	}

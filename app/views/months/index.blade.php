@@ -6,6 +6,8 @@
 
 <p>{{ link_to_route('months.create', Lang::get('months.add'), null, array('class' => 'btn btn-lg btn-success')) }}</p>
 
+{{ $months->links(); }}
+
 @if(Session::has('message'))
     <ul class="alert alert-danger">
     	<li class="error">{{ Session::get('message') }}</li>
@@ -49,6 +51,9 @@
 			@endforeach
 		</tbody>
 	</table>
+
+	{{ $months->links(); }}
+	
 	<script type="text/javascript">
 		$(function(){
 			$('.cast').on('click', function(e){

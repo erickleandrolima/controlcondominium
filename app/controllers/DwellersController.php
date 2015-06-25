@@ -42,7 +42,9 @@ class DwellersController extends BaseController {
 	 */
 	public function index()
 	{
-		$dwellers = DB::table('dwellers')->orderBy('number_apartament', 'ASC')->get();
+		$dwellers = DB::table('dwellers')
+						->orderBy('number_apartament', 'ASC')
+						->simplePaginate(10);
 
 		return View::make('dwellers.index', compact('dwellers'));
 	}

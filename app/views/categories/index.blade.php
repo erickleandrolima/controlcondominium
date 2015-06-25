@@ -6,6 +6,8 @@
 
 <p>{{ link_to_route('categories.create', Lang::get('categories.add'), null, array('class' => 'btn btn-lg btn-success')) }}</p>
 
+{{ $categories->links(); }}
+
 @if(Session::has('success'))
     <div class="alert alert-success">
       {{ Session::get('success') }}
@@ -35,6 +37,9 @@
 			@endforeach
 		</tbody>
 	</table>
+	
+	{{ $categories->links(); }}
+
 @else
 	{{ Lang::get('app.notFoundData') }}
 @endif

@@ -4,7 +4,10 @@
 
 <h1>{{ Lang::get('expenses.title') }}</h1>
 
+
 <p>{{ link_to_route('expenses.create', Lang::get('expenses.add'), null, array('class' => 'btn btn-lg btn-success')) }}</p>
+
+{{ $expenses->links(); }}
 
 @if(Session::has('success'))
     <div class="alert alert-success">
@@ -39,6 +42,8 @@
 			@endforeach
 		</tbody>
 	</table>
+
+	{{ $expenses->links(); }}
 @else
 	{{ Lang::get('app.notFoundData') }}
 @endif

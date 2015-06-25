@@ -22,7 +22,7 @@ class MonthsController extends BaseController {
 	 */
 	public function index()
 	{
-		$months = Month::orderBy('month_reference', 'desc')->get();
+		$months = Month::orderBy('month_reference', 'desc')->simplePaginate(10);
 
 		return View::make('months.index', compact('months'));
 	}

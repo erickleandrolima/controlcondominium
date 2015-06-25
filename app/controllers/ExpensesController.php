@@ -25,7 +25,7 @@ class ExpensesController extends BaseController {
 		$expenses = DB::table(DB::Raw('expenses e LEFT JOIN months m ON m.id = e.month_id'))
 									->select(DB::Raw('e.*, m.month_name'))
 									->orderBy('date_reference', 'desc')
-							 		->get();
+							 		->simplePaginate(10);
 
 		return View::make('expenses.index', compact('expenses'));
 	}

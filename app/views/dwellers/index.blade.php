@@ -6,6 +6,8 @@
 
 <p>{{ link_to_route('dwellers.create', Lang::get('dwellers.add') , null, array('class' => 'btn btn-lg btn-success')) }}</p>
 
+{{ $dwellers->links(); }}
+
 @if(Session::has('success'))
     <div class="alert alert-success">
       {{ Session::get('success') }}
@@ -40,6 +42,9 @@
 			@endforeach
 		</tbody>
 	</table>
+	
+	{{ $dwellers->links(); }}
+
 @else
 	{{ Lang::get('app.notFoundData') }}
 @endif
