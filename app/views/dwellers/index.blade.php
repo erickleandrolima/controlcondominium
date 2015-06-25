@@ -15,6 +15,9 @@
 @endif
 
 @if (count($dwellers) > 0)
+	
+	{{ BaseController::getDefaultDataFilter() }}
+
 	<table class="table table-striped">
 		<thead>
 			<tr>

@@ -16,6 +16,9 @@
 @endif
 
 @if (count($expenses) > 0)
+	
+	{{ BaseController::getDefaultDataFilter() }}
+
 	<table class="table table-striped">
 		<thead>
 			<tr>

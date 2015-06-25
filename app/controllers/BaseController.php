@@ -63,4 +63,13 @@ class BaseController extends Controller {
 
 	}
 
+	public static function getDefaultDataFilter()
+	{
+		return '<form>
+					<label for="'. Lang::get("app.dataFilter"). '">'. 
+						Lang::get("app.dataFilter") .': </label>
+			    	<input type="text" placeholder=" Digite..." id="search">
+				</form>';
+	}
+
 }

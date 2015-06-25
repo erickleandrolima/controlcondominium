@@ -21,6 +21,8 @@ return array(
 
 	'cancel' => 'Cancelar',
 
+	'dataFilter' => 'Filtrar dados',
+
 	'returnList' => 'Retornar para a listagem',
 
 	'recalculate' => 'Recalcular',
