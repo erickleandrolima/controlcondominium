@@ -15,6 +15,9 @@
 @endif
 
 @if ($categories->count())
+	
+	{{ BaseController::getDefaultDataFilter() }}
+
 	<table class="table table-striped">
 		<thead>
 			<tr>

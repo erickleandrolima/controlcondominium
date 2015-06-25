@@ -3,6 +3,8 @@
 @section('main')
 
 <h1>{{ Lang::get('reports.title') }}</h1>
+	
+	{{ BaseController::getDefaultDataFilter() }}
 
 	<table class="table table-striped">
 		<thead>
