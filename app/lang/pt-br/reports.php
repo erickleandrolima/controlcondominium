@@ -15,6 +15,10 @@ return array(
 
 	'description' => 'Descrição do relatório',
 
-	'filter' => 'Gerar relatório',
+	'generate' => 'Gerar relatório',
+
+	'filter' => 'Filtrar',
+
+	'choice' => 'Selecione',
 	
 );

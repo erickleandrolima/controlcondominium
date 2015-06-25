@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-md-10 col-md-offset-2">
-        <h1>Create Dweller</h1>
+        <h1>{{ Lang::get('dwellers.createDweller') }}</h1>
 
         @if ($errors->any())
         	<div class="alert alert-danger">
@@ -19,23 +19,27 @@
 {{ Form::open(array('route' => 'dwellers.store', 'class' => 'form-horizontal')) }}
 
         <div class="form-group">
-            {{ Form::label('name', 'Name:', array('class'=>'col-md-2 control-label')) }}
+            {{ Form::label(Lang::get('dwellers.name'), Lang::get('dwellers.name'), array('class'=>'col-md-2 control-label')) }}
             <div class="col-sm-10">
-              {{ Form::text('name', Input::old('name'), array('class'=>'form-control', 'placeholder'=>'Name')) }}
+              {{ Form::text('name', Input::old('name'), array('class'=>'form-control', 'placeholder'=> Lang::get('dwellers.name'))) }}
             </div>
         </div>
 
         <div class="form-group">
-            {{ Form::label('situation', 'Situation:', array('class'=>'col-md-2 control-label')) }}
+            {{ Form::label(Lang::get('dwellers.situation'), Lang::get('dwellers.situation'), array('class'=>'col-md-2 control-label')) }}
             <div class="col-sm-10">
-              {{ Form::input('number', 'situation', Input::old('situation'), array('class'=>'form-control')) }}
+                {{ Form::select('situation', [
+                   '1' => 'Ocupado',
+                   '0' => 'Desocupado',]
+                ) }}
             </div>
+
         </div>
 
         <div class="form-group">
-            {{ Form::label('number_apartament', 'Number_apartament:', array('class'=>'col-md-2 control-label')) }}
+            {{ Form::label(Lang::get('dwellers.numberApartament'), Lang::get('dwellers.numberApartament'), array('class'=>'col-md-2 control-label')) }}
             <div class="col-sm-10">
-              {{ Form::input('number', 'number_apartament', Input::old('number_apartament'), array('class'=>'form-control')) }}
+              {{Form::select('number_apartament', $apartments, 0)}}
             </div>
         </div>
 
@@ -43,7 +47,8 @@
 <div class="form-group">
     <label class="col-sm-2 control-label">&nbsp;</label>
     <div class="col-sm-10">
-      {{ Form::submit('Create', array('class' => 'btn btn-lg btn-primary')) }}
+      {{ Form::submit(Lang::get('app.create'), array('class' => 'btn btn-lg btn-primary')) }}
+      {{ link_to_route('dwellers.index', Lang::get('app.cancel'), null, array('class' => 'btn btn-lg btn-default')) }}
     </div>
 </div>
 

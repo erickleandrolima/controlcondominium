@@ -15,6 +15,10 @@ return array(
 
 	'add' => 'Adicionar novo morador',
 
+	'createDweller' => 'Novo morador',
+
+	'editDweller' => 'Atualizar dados do morador',
+
 	'show' => 'Mostrar Despesas',
 
 	'situation' => 'Situação',

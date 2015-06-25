@@ -17,8 +17,8 @@
 		<thead>
 			<tr>
 				<th>{{ Lang::get('dwellers.name') }}</th>
-				<th>{{ Lang::get('dwellers.situation') }}</th>
 				<th>{{ Lang::get('dwellers.numberApartament') }}</th>
+				<th>{{ Lang::get('dwellers.situation') }}</th>
 				<th>&nbsp;</th>
 			</tr>
 		</thead>
@@ -27,8 +27,8 @@
 			@foreach ($dwellers as $dweller)
 				<tr>
 					<td>{{{ $dweller->name }}}</td>
-					<td>{{{ $dweller->situation }}}</td>
 					<td>{{{ $dweller->number_apartament }}}</td>
+					<td>{{{ ($dweller->situation == 1) ? 'Ocupado' : 'Desocupado' }}}</td>
                     <td>
                         {{ Form::open(array('style' => 'display: inline-block;', 'method' => 'DELETE', 'route' => array('dwellers.destroy', $dweller->id))) }}
                             {{ Form::submit(Lang::get('app.delete'), array('class' => 'btn btn-danger')) }}

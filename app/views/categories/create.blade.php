@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-md-10 col-md-offset-2">
-        <h1>Create Category</h1>
+        <h1>{{ Lang::get('categories.createCategory') }}</h1>
 
         @if ($errors->any())
         	<div class="alert alert-danger">
@@ -19,9 +19,9 @@
 {{ Form::open(array('route' => 'categories.store', 'class' => 'form-horizontal')) }}
 
         <div class="form-group">
-            {{ Form::label('name', 'Name:', array('class'=>'col-md-2 control-label')) }}
+            {{ Form::label(Lang::get('categories.name'), Lang::get('categories.name'), array('class'=>'col-md-2 control-label')) }}
             <div class="col-sm-10">
-              {{ Form::text('name', Input::old('name'), array('class'=>'form-control', 'placeholder'=>'Name')) }}
+              {{ Form::text('name', Input::old('name'), array('class'=>'form-control', 'placeholder'=> Lang::get('categories.name'))) }}
             </div>
         </div>
 
@@ -29,7 +29,7 @@
 <div class="form-group">
     <label class="col-sm-2 control-label">&nbsp;</label>
     <div class="col-sm-10">
-      {{ Form::submit('Create', array('class' => 'btn btn-lg btn-primary')) }}
+      {{ Form::submit(Lang::get('app.create'), array('class' => 'btn btn-lg btn-primary')) }}
     </div>
 </div>
 

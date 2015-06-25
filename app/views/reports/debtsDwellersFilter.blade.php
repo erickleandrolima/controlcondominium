@@ -7,15 +7,15 @@
 {{ Form::open(array('style' => 'display: inline-block;', 'method' => 'POST')) }}
 
     <div class="form-group">
-        {{ Form::label('Filtro', 'Filtro:', array('class'=>'col-md-2 control-label')) }}
-	    <div class="col-sm-10">
+        {{ Form::label(Lang::get('reports.filter'), Lang::get('reports.choice') , array('class'=>'col-md-3 control-label margin-top-5')) }}
+	    <div class="col-sm-6">
 		    {{Form::select('filter', $select, 0)}}
 	    </div>
     </div>
 
     <br/>
 
-    {{ Form::submit('Filtrar', array('class' => 'btn btn-success')) }}
+    {{ Form::submit(Lang::get('reports.generate'), array('class' => 'btn btn-success')) }}
 
 
 {{ Form::close() }}

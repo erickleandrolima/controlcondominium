@@ -15,10 +15,14 @@ return array(
 
 	'add' => 'Adicionar mês',
 
+	'createMonth' => 'Novo mês',
+
+	'editMonth' => 'Atualizar mês',
+
 	'monthAndYear' => 'Mês e ano',
 
 	'referenceDate' => 'Data de referência',
 
-	'referenceDate' => 'Data de referência',
+	'dueDate' => 'Data de vencimento',
 
 );

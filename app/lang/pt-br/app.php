@@ -17,6 +17,12 @@ return array(
 
 	'edit' => 'Editar',
 
+	'update' => 'Atualizar',
+
+	'cancel' => 'Cancelar',
+
+	'returnList' => 'Retornar para a listagem',
+
 	'recalculate' => 'Recalcular',
 
 	'throw' => 'Lançar',

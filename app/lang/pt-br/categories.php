@@ -16,4 +16,8 @@ return array(
 	'add' => 'Adicionar categoria',
 
 	'name' => 'Nome',
+
+	'createCategory' => 'Nova Categoria',
+
+	'editCategory' => 'Atualizar Categoria',
 );

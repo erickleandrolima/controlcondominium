@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-md-10 col-md-offset-2">
-        <h1>Editar Mês</h1>
+        <h1>{{ Lang::get('months.editMonth') }}</h1>
 
         @if ($errors->any())
         	<div class="alert alert-danger" role="alert">
@@ -34,17 +34,17 @@
         </div>
 
         <div class="form-group">
-            {{ Form::label('Data de Vencimento', 'Data de Vencimento:', array('class'=>'col-md-2 control-label')) }}
+            {{ Form::label(Lang::get('months.dueDate'), Lang::get('months.dueDate'), array('class'=>'col-md-2 control-label')) }}
             <div class="col-sm-10">
-              {{ Form::text('due_date', Input::old('due_date'), array('class'=>'date form-control', 'placeholder'=>'Data de Vencimento')) }}
+              {{ Form::text('due_date', Input::old('due_date'), array('class'=>'date form-control', 'placeholder'=> Lang::get('months.dueDate'))) }}
             </div>
         </div>
 
 <div class="form-group">
     <label class="col-sm-2 control-label">&nbsp;</label>
     <div class="col-sm-10">
-      {{ Form::submit('Atualizar', array('class' => 'btn btn-lg btn-primary')) }}
-      {{ link_to_route('months.index', 'Cancelar', null , array('class' => 'btn btn-lg btn-default')) }}
+      {{ Form::submit(Lang::get('app.update'), array('class' => 'btn btn-lg btn-primary')) }}
+      {{ link_to_route('months.index', Lang::get('app.cancel'), null , array('class' => 'btn btn-lg btn-default')) }}
     </div>
 </div>
 

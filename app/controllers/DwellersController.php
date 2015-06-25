@@ -9,6 +9,26 @@ class DwellersController extends BaseController {
 	 */
 	protected $dweller;
 
+	public $apartments = array (
+		'0' => 'Selecione o número do apartamento',
+		'101' => '101',
+		'102' => '102',
+		'103' => '103',
+		'104' => '104',
+		'201' => '201',
+		'202' => '202',
+		'203' => '203',
+		'204' => '204',
+		'301' => '301',
+		'302' => '302',
+		'303' => '303',
+		'304' => '304',
+		'401' => '401',
+		'402' => '402',
+		'403' => '403',
+		'404' => '404',
+	);
+
 	public function __construct(Dweller $dweller)
 	{
 		$this->beforeFilter('auth');
@@ -34,7 +54,9 @@ class DwellersController extends BaseController {
 	 */
 	public function create()
 	{
-		return View::make('dwellers.create');
+		$apartments = $this->apartments;
+
+		return View::make('dwellers.create', compact('apartments'));
 	}
 
 	/**
@@ -117,7 +139,9 @@ class DwellersController extends BaseController {
 			return Redirect::route('dwellers.index');
 		}
 
-		return View::make('dwellers.edit', compact('dweller'));
+		$apartments = $this->apartments;
+
+		return View::make('dwellers.edit', compact('dweller', 'apartments'));
 	}
 
 	/**
@@ -136,7 +160,7 @@ class DwellersController extends BaseController {
 			$dweller = $this->dweller->find($id);
 			$dweller->update($input);
 
-			return Redirect::route('dwellers.show', $id)
+			return Redirect::route('dwellers.index', $id)
 											->with('success', '<strong>Sucesso</strong> Registro atualizado!');
 		}
 
