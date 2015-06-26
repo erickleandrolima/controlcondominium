@@ -70,15 +70,20 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-
-            @if (Session::has('message'))
-                <div class="flash alert">
-                    <p>{{ Session::get('message') }}</p>
+            @if(Session::has('success'))
+                <div class="alert alert-success">
+                  {{ Session::get('success') }}
                 </div>
+            @endif
+            
+            @if(Session::has('message'))
+                <ul class="alert alert-danger">
+                  <li class="error">{{ Session::get('message') }}</li>
+                </ul>
             @endif
 
             @yield('main')
-
+            
         </div>
     </div>
 </div>

@@ -2,12 +2,6 @@
 
 @section('main')
 
-@if(Session::has('success'))
-    <div class="alert alert-success">
-      {{ Session::get('success') }}
-    </div>
-@endif
-
 <p>{{ link_to_route('categories.index', Lang::get('app.returnList'), null, array('class'=>'btn btn-lg btn-primary')) }}</p>
 
 <table class="table table-striped">

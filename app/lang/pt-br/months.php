@@ -21,6 +21,16 @@ return array(
 
 	'monthAndYear' => 'Mês e ano',
 
+	'generateMonths' => 'Gerar meses',
+
+	'deleteMonths' => 'Deletar meses',
+
+	'generateMessage' => 'Digite o ano para o qual deseja gerar os meses',
+
+	'deleteMessage' => 'Digite o ano que deseja deletar os meses',
+
+	'year' => 'Ano',
+
 	'referenceDate' => 'Data de referência',
 
 	'dueDate' => 'Data de vencimento',

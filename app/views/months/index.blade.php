@@ -4,21 +4,28 @@
 
 <h1>{{ Lang::get('months.title') }}</h1>
 
-<p>{{ link_to_route('months.create', Lang::get('months.add'), null, array('class' => 'btn btn-lg btn-success')) }}</p>
+<div class="col-md-12">
+	<div class="col-md-6">
+		<h5>{{ Lang::get('months.generateMessage') }}</h5>
+
+		{{ Form::open(array( 'method' => 'POST', 'action' => array('MonthsController@generateMonths'))) }}
+		  {{ Form::text('year', Input::old('year'), array( 'style' => 'margin-bottom:10px; width:12%', 'maxlength' => '4', 'class'=>'form-control', 'placeholder'=> Lang::get('months.year') )) }}
+		  {{ Form::submit(Lang::get('months.generateMonths'), array('class' => 'btn btn-success')) }}
+		{{ Form::close() }}
+	</div>
+	<div class="col-md-6">
+		<h5>{{ Lang::get('months.deleteMessage') }}</h5>
+
+		{{ Form::open(array( 'method' => 'POST', 'action' => array('MonthsController@deleteMonths'))) }}
+		  {{ Form::text('year', Input::old('year'), array( 'style' => 'margin-bottom:10px; width:12%', 'maxlength' => '4', 'class'=>'form-control', 'placeholder'=> Lang::get('months.year') )) }}
+		  {{ Form::submit(Lang::get('months.deleteMonths'), array('class' => 'btn btn-danger')) }}
+		{{ Form::close() }}
+	</div>
+</div>
+
+
 
 {{ $months->links(); }}
-
-@if(Session::has('message'))
-    <ul class="alert alert-danger">
-    	<li class="error">{{ Session::get('message') }}</li>
-    </ul>
-@endif
-
-@if(Session::has('success'))
-    <div class="alert alert-success">
-    	{{ Session::get('success') }}
-    </div>
-@endif
 
 @if ($months->count())
 	
@@ -39,9 +46,6 @@
 					<td>{{{ $month->month_reference }}}</td>
 					<td>{{{ $month->month_name }}}</td>
 					<td>
-						{{ Form::open(array('style' => 'display: inline-block;', 'method' => 'DELETE', 'route' => array('months.destroy', $month->id))) }}
-							{{ Form::submit(Lang::get('app.delete'), array('class' => 'btn btn-danger')) }}
-						{{ Form::close() }}
 						{{ link_to_route('months.edit', Lang::get('app.edit'), array($month->id), array('class' => 'btn btn-info')) }}
 						@if ($month->casted == 0)
 							{{ link_to('month/'. $month->month_reference .'/cast', Lang::get('app.throw'), 'class="cast btn btn-warning"') }}

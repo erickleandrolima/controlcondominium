@@ -2,12 +2,6 @@
 
 @section('main')
 
-@if(Session::has('success'))
-    <div class="alert alert-success">
-      {{ Session::get('success') }}
-    </div>
-@endif
-
 {{ Form::open(array('url'=>'users/signin', 'class'=>'form-signin')) }}
     <h2 class="form-signin-heading">Login</h2>
     
