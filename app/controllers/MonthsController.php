@@ -227,7 +227,7 @@ class MonthsController extends BaseController {
 	public function rebaseCalc($date)
 	{
 		DB::table('dweller_expenses')->where('date_expense', $date)->delete();
-		DB::table('months')->where('month_reference', $date)->update(['casted' => 0]);
+		DB::table('months')->where('month_reference', $date)->update(['casted' => 0, 'cost' => 0]);
 		return Redirect::route('months.index')
 						->with('success', '<strong>Sucesso</strong> Recalcule o mês escolhido!');
 	}
