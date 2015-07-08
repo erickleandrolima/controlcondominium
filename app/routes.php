@@ -21,6 +21,8 @@ Route::resource('expenses', 'ExpensesController');
 
 Route::resource('months', 'MonthsController');
 
+Route::resource('residentials', 'ResidentialsController');
+
 Route::get('month/{date}/cast', 'MonthsController@cast');
 
 Route::get('month/{date}/rebase', 'MonthsController@rebaseCalc');
@@ -51,3 +53,6 @@ Route::get('report/debtsDwellers', 'ReportsController@debtsDwellers');
 
 Route::post('report/debtsDwellers', 'ReportsController@debtsDwellersFilter');
 
+Route::resource('roles', 'RolesController');
+
+Route::resource('permissions', 'PermissionsController');

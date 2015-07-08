@@ -55,11 +55,14 @@
   <div class="container-fluid">
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
+        <li><a href="residentials"><?php echo Lang::get('residentials.title') ?> </a></li>
         <li><a href="months"><?php echo Lang::get('months.title') ?> </a></li>
         <li><a href="dwellers"><?php echo Lang::get('dwellers.title') ?></a></li>
         <li><a href="expenses"><?php echo Lang::get('expenses.title') ?></a></li>
         <li><a href="categories"><?php echo Lang::get('categories.title') ?></a></li>
         <li><a href="reports"> <?php echo Lang::get('reports.title') ?> </a></li>
+        <li><a href="permissions"><?php echo Lang::get('permissions.title') ?> </a></li>
+        <li><a href="roles"><?php echo Lang::get('roles.title') ?> </a></li>
         @if(Auth::check())
           <li><a href="users/logout"><?php echo Lang::get('login.logout') ?></a></li>
         @endif
