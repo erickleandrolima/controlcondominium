@@ -6,6 +6,7 @@
     <base href="/"></base>
     <link rel="stylesheet" href="assets/css/bootstrap.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/jquery-ui.css" />
     <script src="assets/js/jquery-2.1.3.min.js"></script>
     <script src="assets/js/jquery-ui.min.js"></script>
@@ -51,25 +52,24 @@
 <body>
 
 @if(Auth::check())
-  <header>
-      <nav class="navbar navbar-default">
-        <div class="container-fluid">
-          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-              <li><a href="months"><?php echo Lang::get('months.title') ?> </a></li>
-              <li><a href="dwellers"><?php echo Lang::get('dwellers.title') ?></a></li>
-              <li><a href="expenses"><?php echo Lang::get('expenses.title') ?></a></li>
-              <li><a href="categories"><?php echo Lang::get('categories.title') ?></a></li>
-              <li><a href="reports"> <?php echo Lang::get('reports.title') ?> </a></li>
-                <li><a href="users/logout"><?php echo Lang::get('login.logout') ?></a></li>
-            </ul>
-          </div>  <!-- collapse navbar -->
-        </div> <!-- container-fluid -->
-      </nav>
-  </header>    
+  <header class="top-bar">
+
+  </header>
+  <aside class="side-bar">
+    <nav>
+        <ul>
+          <li> <i class="fa red fa-calendar"></i> <a href="months"><?php echo Lang::get('months.title') ?> </a></li>
+          <li> <i class="fa blue fa-users"></i> <a href="dwellers"><?php echo Lang::get('dwellers.title') ?></a></li>
+          <li> <i class="fa green fa-money"></i> <a href="expenses"><?php echo Lang::get('expenses.title') ?></a></li>
+          <li> <i class="fa orange fa-list-ul"></i> <a href="categories"><?php echo Lang::get('categories.title') ?></a></li>
+          <li> <i class="fa pink fa-trello"></i> <a href="reports"> <?php echo Lang::get('reports.title') ?> </a></li>
+          <li> <i class="fa fa-sign-out"></i> <a href="users/logout"><?php echo Lang::get('login.logout') ?></a></li>
+        </ul>
+    </nav>
+  </aside>
 @endif
 
-<div class="container">
+<div class="container padding-top-25">
     <div class="row">
         <div class="col-md-12">
             @if(Session::has('success'))
