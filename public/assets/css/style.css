@@ -39,23 +39,24 @@ body {
 	color: #d9797a;
 }
 
-
 .top-bar {
 	width: 100%;
-	position: absolute;
-	top: 0;
 	height: 50px;
 	min-height: 50px;
 	background: #515763;	
 }
 
 .side-bar {
-	position: absolute;
-	left: 0;
-	top: 50px;
 	width: 250px;
 	background: #515763;
 	min-height: 950px;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.main {
+	display: inline-block;
+	vertical-align: top;
 }
 
 .side-bar ul {
@@ -72,4 +73,16 @@ body {
 	display: inline-block;
 	color: #fff;
 	padding: 12px 22px 12px 8px;
+}
+
+@media (min-width: 992px) {
+	.container {
+		width: 720px;
+	}
+}
+
+@media (min-width: 1200px) {
+	.container {
+		width: 1000px;
+	}
 }

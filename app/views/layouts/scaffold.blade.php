@@ -44,9 +44,6 @@
 
       });
     </script>
-    <style>
-        body { padding-top: 20px; }
-    </style>
 </head>
 
 <body>
@@ -55,6 +52,7 @@
   <header class="top-bar">
 
   </header>
+
   <aside class="side-bar">
     <nav>
         <ul>
@@ -69,26 +67,32 @@
   </aside>
 @endif
 
-<div class="container padding-top-25">
-    <div class="row">
-        <div class="col-md-12">
-            @if(Session::has('success'))
-                <div class="alert alert-success">
-                  {{ Session::get('success') }}
-                </div>
-            @endif
-            
-            @if(Session::has('message'))
-                <ul class="alert alert-danger">
-                  <li class="error">{{ Session::get('message') }}</li>
-                </ul>
-            @endif
+@if(Auth::check())
+<section class="main">
+@endif  
+  <div class="container">
+      <div class="row">
+          <div class="col-md-12">
+              @if(Session::has('success'))
+                  <div class="alert alert-success">
+                    {{ Session::get('success') }}
+                  </div>
+              @endif
+              
+              @if(Session::has('message'))
+                  <ul class="alert alert-danger">
+                    <li class="error">{{ Session::get('message') }}</li>
+                  </ul>
+              @endif
 
-            @yield('main')
-            
-        </div>
-    </div>
-</div>
+              @yield('main')
+              
+          </div>
+      </div>
+  </div>
+@if(Auth::check())  
+</section>  
+@endif
 
 </body>
 </html>
