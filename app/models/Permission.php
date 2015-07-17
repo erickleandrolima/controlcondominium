@@ -1,11 +1,8 @@
 <?php
 
-class Permission extends Eloquent {
-	protected $guarded = array();
+use Zizaco\Entrust\EntrustPermission;
 
-	public static $rules = array(
-		'permission_description' => 'required',
-		'permission_rate' => 'required',
-		'permission_status' => 'required'
-	);
+class Permission extends EntrustPermission
+{
+
 }

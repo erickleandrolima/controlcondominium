@@ -1,11 +1,8 @@
 <?php
 
-class Role extends Eloquent {
-	protected $guarded = array();
+use Zizaco\Entrust\EntrustRole;
 
-	public static $rules = array(
-		'role_description' => 'required',
-		'role_rate' => 'required',
-		'role_status' => 'required'
-	);
+class Role extends EntrustRole
+{
+
 }
