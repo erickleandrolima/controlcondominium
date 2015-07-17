@@ -48,10 +48,8 @@
 
 <body>
 
-@if(Auth::check())
   <header class="top-bar">
-
-  </header>
+<header>
 
   <aside class="side-bar">
     <nav>

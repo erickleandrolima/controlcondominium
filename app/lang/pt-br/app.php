@@ -33,6 +33,10 @@ return array(
 
 	'confirmAction' => 'Deseja realmente realizar esta ação?',
 
+	'active' => 'Ativo',
+
+	'inactive' => 'Inativo',
+
 	/* Months Module */
 
 	'months' => 'Meses',
