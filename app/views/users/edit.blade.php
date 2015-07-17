@@ -42,7 +42,7 @@
         <div class="form-group">
             {{ Form::label(Lang::get('users.password'), Lang::get('users.password'), array('class'=>'col-md-2 control-label')) }}
             <div class="col-sm-10">
-              {{ Form::password('password', Input::old(''), array('class'=>'form-control', 'placeholder'=> Lang::get('users.password'))) }}
+              {{ Form::password('password', Input::old('password'), array('class'=>'form-control', 'placeholder'=> Lang::get('users.password'))) }}
             </div>
         </div>
 

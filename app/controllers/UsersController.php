@@ -28,14 +28,20 @@ class UsersController extends BaseController {
         }
 
         $userRole = DB::table('roles')
-                    ->leftJoin('assigned_roles','roles.id', '=', 'assigned_roles.user_id')
+                    ->leftJoin('assigned_roles','roles.id', '=', 'assigned_roles.role_id')
                     ->where('assigned_roles.user_id', '=', $id)
                     ->get();
 
-        
+        if (empty($userRole)):
+            $roleDummy = new stdClass();
+            $roleDummy->role_id = 0;
+            $userRole[0] = $roleDummy;
+        endif;                   
+
         $Allroles = DB::table('roles')
-                    ->get();                    
-        
+                    ->get();  
+
+       
         $roles[0] = 'Selecione o mês de referência';
 
         foreach($Allroles as $role) {
@@ -51,13 +57,27 @@ class UsersController extends BaseController {
         $user->firstname = Input::get('firstname');
         $user->lastname = Input::get('lastname');
         $user->email = Input::get('email');
-        $user->password = Hash::make(Input::get('password'));
+        if (!empty(Input::get('password'))):
+            $user->password = Hash::make(Input::get('password'));
+        endif;
         $user->situation = Input::get('situation');
         $user->save();
 
-        DB::table('assigned_roles')
-            ->where('user_id', '=', $id)
-            ->update(array('role_id' => Input::get('role_id')));
+        $findUserRole = DB::table('assigned_roles')->where('user_id', '=', $id)->get();
+
+        if (empty($findUserRole)):
+            DB::table('assigned_roles')
+            ->insert(array(
+                'role_id' => Input::get('role_id'),
+                'user_id' => $id
+            ));
+        else:    
+
+            DB::table('assigned_roles')
+                ->where('user_id', '=', $id)
+                ->update(array('role_id' => Input::get('role_id')));
+
+        endif;        
                  
         return Redirect::route('users.index')->with('success', '<strong>Sucesso</strong> dados atualizados com sucesso!');
     }
@@ -82,6 +102,7 @@ class UsersController extends BaseController {
             $user->email = Input::get('email');
             $user->password = Hash::make(Input::get('password'));
             $user->expire_access = $expire_date;
+            $user->situation = 1;
             $user->save();
             if (!Auth::check()):    
                 return Redirect::to('users/login')->with('success', '<strong>Sucesso</strong> Faça o login com o novo usuário');
@@ -121,12 +142,11 @@ class UsersController extends BaseController {
     {
         $user = User::where('email', '=', Input::get('email'))->first();
 
-        if ($user->expire_access == date('Y-m-d')):
+        if ($user->expire_access == date('Y-m-d') || $user->situation == 0):
             return Redirect::to('users/login')
-                ->with('message', 'O tempo de acesso para o seu usuário expirou, entre em contato com o suporte: suporte@wwebcondominio.com')
+                ->with('message', 'O tempo de acesso para o seu usuário expirou ou sua conta está inativa, entre em contato com o suporte: suporte@wwebcondominio.com')
                 ->withInput();
         else:    
-
         	if (Auth::attempt(array('email'=>Input::get('email'), 'password'=>Input::get('password')))) {
         	    return Redirect::to('months')->with('success', 'Login realizado com sucesso!');
         	} else {
