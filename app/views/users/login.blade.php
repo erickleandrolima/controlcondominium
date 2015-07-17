@@ -11,7 +11,11 @@
     <div class="form-group">
       {{ Form::password('password', array('class'=>'form-control', 'placeholder'=>'Password')) }}
     </div>
-     {{ Form::submit('Login', array('class'=>'btn btn-large btn-primary btn-block'))}}
+    {{ Form::submit('Login', array('class'=>'btn btn-large btn-primary btn-block'))}}
+    <div class="form-group" style="text-align:center">
+		<h6> Não possui conta ainda? <a href="users/create">clique aqui</a> </h6>
+    </div>
 {{ Form::close() }}
+
 
 @stop

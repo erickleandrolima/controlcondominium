@@ -83,8 +83,11 @@ class UsersController extends BaseController {
             $user->password = Hash::make(Input::get('password'));
             $user->expire_access = $expire_date;
             $user->save();
-             
-            return Redirect::route('users.index')->with('success', '<strong>Sucesso</strong> Usuário criado');
+            if (!Auth::check()):    
+                return Redirect::to('users/login')->with('success', '<strong>Sucesso</strong> Faça o login com o novo usuário');
+            else:
+                return Redirect::route('users.index')->with('success', '<strong>Sucesso</strong> Usuário criado');
+            endif;
 
         } else {
             return Redirect::route('users.create')
