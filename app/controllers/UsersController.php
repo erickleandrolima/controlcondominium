@@ -71,11 +71,17 @@ class UsersController extends BaseController {
         $validator = Validator::make(Input::all(), User::$rules);
      
         if ($validator->passes()) {
+
+            // set numbers days after today expire access
+            $expire_date = strtotime('+30 days', strtotime(date('Y-m-d'))) ;
+            $expire_date = date('Y-m-d', $expire_date);
+
             $user = new User;
             $user->firstname = Input::get('firstname');
             $user->lastname = Input::get('lastname');
             $user->email = Input::get('email');
             $user->password = Hash::make(Input::get('password'));
+            $user->expire_access = $expire_date;
             $user->save();
              
             return Redirect::route('users.index')->with('success', '<strong>Sucesso</strong> Usuário criado');
@@ -101,7 +107,7 @@ class UsersController extends BaseController {
         $this->user->find($id)->delete();
 
         return Redirect::route('users.index')
-                                        ->with('success', '<strong>Sucesso</strong> Registro excluído!');
+                        ->with('success', '<strong>Sucesso</strong> Registro excluído!');
     }
 
     public function getDashboard() {
@@ -110,12 +116,22 @@ class UsersController extends BaseController {
 
     public function signin() 
     {
-    	if (Auth::attempt(array('email'=>Input::get('email'), 'password'=>Input::get('password')))) {
-    	    return Redirect::to('months')->with('success', 'Login realizado com sucesso!');
-    	} else {
-    	    return Redirect::to('users/login')
-    	        ->with('message', 'Você digitou sua senha ou email incorretamente, tente novamente')
-    	        ->withInput();
-    	}             
+        $user = User::where('email', '=', Input::get('email'))->first();
+
+        if ($user->expire_access == date('Y-m-d')):
+            return Redirect::to('users/login')
+                ->with('message', 'O tempo de acesso para o seu usuário expirou, entre em contato com o suporte: suporte@wwebcondominio.com')
+                ->withInput();
+        else:    
+
+        	if (Auth::attempt(array('email'=>Input::get('email'), 'password'=>Input::get('password')))) {
+        	    return Redirect::to('months')->with('success', 'Login realizado com sucesso!');
+        	} else {
+        	    return Redirect::to('users/login')
+        	        ->with('message', 'Você digitou sua senha ou email incorretamente, tente novamente')
+        	        ->withInput();
+        	}
+
+        endif;                 
     }
 }

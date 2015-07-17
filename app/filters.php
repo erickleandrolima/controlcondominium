@@ -38,6 +38,14 @@ Route::filter('auth', function()
 	if (Auth::guest()):
 		return Redirect::guest('/');
 	endif;
+
+	$user = User::where('email', '=', Auth::user()->email)->first();
+
+	if ($user->expire_access == date('Y-m-d')):
+	    return Redirect::to('users/login')
+	        ->with('message', 'O tempo de acesso para o seu usuário expirou, entre em contato com o suporte: suporte@wwebcondominio.com')
+	        ->withInput();
+	endif;        
 });
 
 
