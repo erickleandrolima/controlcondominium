@@ -1,3 +1,7 @@
+body {
+	background: #ebebeb;
+}
+
 @-ms-viewport{
   width: device-width;
 }
@@ -9,4 +13,76 @@
 
 .margin-top-5 {
 	margin-top: 5px;
+}
+
+.padding-top-25 {
+	padding-top: 25px;
+}
+
+.green {
+	color: #6fc274;
+}
+
+.red {
+	color: #ef756a;
+}
+
+.blue {
+	color: #347088;
+}
+
+.orange {
+	color: #ec9811;
+}
+
+.pink {
+	color: #d9797a;
+}
+
+.top-bar {
+	width: 100%;
+	height: 50px;
+	min-height: 50px;
+	background: #515763;	
+}
+
+.side-bar {
+	width: 250px;
+	background: #515763;
+	min-height: 950px;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.main {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.side-bar ul {
+	list-style: none;
+	padding-left: 0;
+}
+
+.side-bar ul > li {
+	border-bottom: 1px solid #515763;
+	padding-left: 20px;
+}
+
+.side-bar ul > li > a {
+	display: inline-block;
+	color: #fff;
+	padding: 12px 22px 12px 8px;
+}
+
+@media (min-width: 992px) {
+	.container {
+		width: 720px;
+	}
+}
+
+@media (min-width: 1200px) {
+	.container {
+		width: 1000px;
+	}
 }
