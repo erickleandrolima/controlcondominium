@@ -48,9 +48,8 @@
 
 <body>
 
-  <header class="top-bar">
-<header>
-
+@if(Auth::check())
+  <header class="top-bar"></header>
   <aside class="side-bar">
     <nav>
         <ul>
@@ -59,6 +58,9 @@
           <li> <i class="fa green fa-money"></i> <a href="expenses"><?php echo Lang::get('expenses.title') ?></a></li>
           <li> <i class="fa orange fa-list-ul"></i> <a href="categories"><?php echo Lang::get('categories.title') ?></a></li>
           <li> <i class="fa pink fa-trello"></i> <a href="reports"> <?php echo Lang::get('reports.title') ?> </a></li>
+          @if (Entrust::hasRole('Admin'))
+            <li> <i class="fa blue fa-male"></i> <a href="users"> <?php echo Lang::get('users.title') ?> </a></li>
+          @endif  
           <li> <i class="fa fa-sign-out"></i> <a href="users/logout"><?php echo Lang::get('login.logout') ?></a></li>
         </ul>
     </nav>
