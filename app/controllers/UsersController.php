@@ -2,7 +2,6 @@
  
 class UsersController extends BaseController {
     
-    protected $layout = "auth.login";
     protected $user;
 
     public function __construct(User $user) {
@@ -89,6 +88,14 @@ class UsersController extends BaseController {
         }
     }
 
+    // Logout....I dont know why
+    
+    public function show()
+    {
+        Auth::logout();
+        return View::make('users.login')->with('success', 'Logout realizado!');
+    }
+
     public function destroy($id)
     {
         $this->user->find($id)->delete();
@@ -98,15 +105,10 @@ class UsersController extends BaseController {
     }
 
     public function getDashboard() {
-        $this->layout->content = View::make('months.index');
+        View::make('months.index');
     }
 
-    public function getLogin() 
-    {
-        $this->layout->content = View::make('auth.login');
-    }
-
-    public function postSignin() 
+    public function signin() 
     {
     	if (Auth::attempt(array('email'=>Input::get('email'), 'password'=>Input::get('password')))) {
     	    return Redirect::to('months')->with('success', 'Login realizado com sucesso!');
@@ -116,10 +118,4 @@ class UsersController extends BaseController {
     	        ->withInput();
     	}             
     }
-
-    public function getLogout() {
-        Auth::logout();
-        return Redirect::to('users/login')->with('success', 'Logout realizado!');
-    }
-
 }

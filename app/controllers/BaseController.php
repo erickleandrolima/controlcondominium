@@ -20,7 +20,7 @@ class BaseController extends Controller {
 	public function index()
 	{
 		if (!Auth::check()):
-			return View::make('auth.login');
+			return View::make('users.login');
 		else:
 			$months = Month::orderBy('month_reference', 'desc')->simplePaginate(10);
 			return View::make('months.index', compact('months'));

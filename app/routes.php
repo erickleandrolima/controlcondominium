@@ -15,6 +15,12 @@ Route::get('/', 'BaseController@index');
 
 Route::resource('users', 'UsersController');
 
+Route::post('users/signin', 'UsersController@signin');
+
+Route::get('users/login', function(){
+	echo 'ola';
+});
+
 Route::resource('dwellers', 'DwellersController');
 
 Route::resource('expenses', 'ExpensesController');
