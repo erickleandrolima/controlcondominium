@@ -13,7 +13,7 @@
     </div>
     {{ Form::submit('Login', array('class'=>'btn btn-large btn-primary btn-block'))}}
     <div class="form-group" style="text-align:center">
-		<h6> Não possui conta ainda? <a href="users/create">clique aqui</a> </h6>
+        <h6> <a href="users/create"> Não possui conta ainda? clique aqui</a> </h6>
     </div>
 {{ Form::close() }}
 

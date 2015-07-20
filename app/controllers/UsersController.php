@@ -142,19 +142,26 @@ class UsersController extends BaseController {
     {
         $user = User::where('email', '=', Input::get('email'))->first();
 
-        if ($user->expire_access == date('Y-m-d') || $user->situation == 0):
-            return Redirect::to('users/login')
-                ->with('message', 'O tempo de acesso para o seu usuário expirou ou sua conta está inativa, entre em contato com o suporte: suporte@wwebcondominio.com')
-                ->withInput();
-        else:    
-        	if (Auth::attempt(array('email'=>Input::get('email'), 'password'=>Input::get('password')))) {
-        	    return Redirect::to('months')->with('success', 'Login realizado com sucesso!');
-        	} else {
-        	    return Redirect::to('users/login')
-        	        ->with('message', 'Você digitou sua senha ou email incorretamente, tente novamente')
-        	        ->withInput();
-        	}
+        if (!is_null($user)):
 
-        endif;                 
+            if ($user->expire_access == date('Y-m-d') || $user->situation == 0):
+                return Redirect::to('users/login')
+                    ->with('message', 'O tempo de acesso para o seu usuário expirou ou sua conta está inativa, entre em contato com o suporte: suporte@wwebcondominio.com')
+                    ->withInput();
+            else:    
+            	if (Auth::attempt(array('email'=>Input::get('email'), 'password'=>Input::get('password')))) {
+            	    return Redirect::to('months')->with('success', 'Login realizado com sucesso!');
+            	} else {
+            	    return Redirect::to('users/login')
+            	        ->with('message', 'Você digitou sua senha ou email incorretamente, tente novamente')
+            	        ->withInput();
+            	}
+
+            endif;
+        else:
+            return Redirect::to('users/login')
+                ->with('message', 'Seu usuário não existe em nosso sistema, <a href="users/create">clique aqui e crie uma conta</a>')
+                ->withInput();
+        endif;                     
     }
 }
