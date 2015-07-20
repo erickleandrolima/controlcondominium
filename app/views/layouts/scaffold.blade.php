@@ -40,6 +40,12 @@
 
         });
 
+        $('input[type=number]').keypress(function(){
+            var value = $(this).val();
+            value = value.replace(/[^0-9]+/g, '');
+            $(this).val(value);
+        });
+
         $('input#search').quicksearch('table tbody tr');
 
       });
@@ -56,6 +62,7 @@
           <li> <i class="fa red fa-calendar"></i> <a href="months"><?php echo Lang::get('months.title') ?> </a></li>
           <li> <i class="fa blue fa-users"></i> <a href="dwellers"><?php echo Lang::get('dwellers.title') ?></a></li>
           <li> <i class="fa green fa-money"></i> <a href="expenses"><?php echo Lang::get('expenses.title') ?></a></li>
+          <li> <i class="fa fa-building-o yellow"></i> <a href="apartments"> <?php echo Lang::get('apartments.title') ?> </a></li>
           <li> <i class="fa orange fa-list-ul"></i> <a href="categories"><?php echo Lang::get('categories.title') ?></a></li>
           <li> <i class="fa pink fa-trello"></i> <a href="reports"> <?php echo Lang::get('reports.title') ?> </a></li>
           @if (Entrust::hasRole('Admin'))

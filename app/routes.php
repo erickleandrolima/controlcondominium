@@ -17,10 +17,6 @@ Route::resource('users', 'UsersController');
 
 Route::post('users/signin', 'UsersController@signin');
 
-Route::get('users/login', function(){
-	echo 'ola';
-});
-
 Route::resource('dwellers', 'DwellersController');
 
 Route::resource('expenses', 'ExpensesController');
@@ -59,6 +55,4 @@ Route::get('report/debtsDwellers', 'ReportsController@debtsDwellers');
 
 Route::post('report/debtsDwellers', 'ReportsController@debtsDwellersFilter');
 
-Route::resource('roles', 'RolesController');
-
-Route::resource('permissions', 'PermissionsController');
+Route::resource('apartments', 'ApartmentsController');
