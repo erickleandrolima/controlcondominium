@@ -132,9 +132,13 @@ class ApartmentsController extends BaseController {
 
 	public function getApartments()
 	{
-		foreach (Apartment::all()->toArray() as $item):
-			$arr[$item['number_apartment']] = $item['number_apartment'];			
-		endforeach;
+		if (!empty(Apartment::all()->toArray())):
+			foreach (Apartment::all()->toArray() as $item):
+				$arr[$item['number_apartment']] = $item['number_apartment'];			
+			endforeach;
+		else:
+			$arr = array();
+		endif;	
 
 		return $arr;
 	}
