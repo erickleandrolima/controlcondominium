@@ -33,16 +33,28 @@ return array(
 
 	'confirmAction' => 'Deseja realmente realizar esta ação?',
 
-	/* Months Module */
-
 	'months' => 'Meses',
 
-	'addMonth' => 'Adicionar mês',
+	'value' => 'Valor',
 
-	'monthAndYear' => 'Mês e ano',
+	'returnList' => 'Retornar para lista principal',
 
-	'referenceDate' => 'Data de referência',
+	'status' => 'Situação',
 
-	'referenceDate' => 'Data de referência',
+	'parcialPay' => 'Pagamento Parcial',
+
+	'reversePayment' => 'Estornar pagamento',
+
+	'pay' => 'Pagar',
+
+	'paid' => 'Pago',
+
+	'total' => 'total',
+
+	'historyPayment' => 'Histórico de pagamentos',
+
+	'balance' => 'Saldo devedor',
+
+	'name' => 'Nome',
 
 );

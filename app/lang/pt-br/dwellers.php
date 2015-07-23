@@ -21,10 +21,5 @@ return array(
 
 	'show' => 'Mostrar Despesas',
 
-	'situation' => 'Situação',
-
-	'name' => 'Nome',
-
 	'numberApartament' => 'Número do apartamento',
-
 );
