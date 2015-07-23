@@ -33,7 +33,6 @@
                             {{ Form::submit(Lang::get('app.delete'), array('class' => 'btn btn-danger')) }}
                         {{ Form::close() }}
                         {{ link_to_route('dwellers.edit', Lang::get('app.edit'), array($dweller->id), array('class' => 'btn btn-info')) }}
-                      	{{ link_to_route('dwellers.show', Lang::get('dwellers.show'), $dweller->id, array('class' => 'btn btn-warning')) }}
                     </td>
 				</tr>
 			@endforeach

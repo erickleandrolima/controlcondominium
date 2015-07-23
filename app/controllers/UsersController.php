@@ -13,6 +13,7 @@ class UsersController extends BaseController {
     {
         $users = DB::table('users')
                         ->orderBy('firstname', 'ASC')
+                        ->where('user_id', '=', Auth::id())
                         ->simplePaginate(10);
 
         return View::make('users.index', compact('users'));
@@ -103,6 +104,7 @@ class UsersController extends BaseController {
             $user->password = Hash::make(Input::get('password'));
             $user->expire_access = $expire_date;
             $user->situation = 1;
+            $user->user_id = (!empty(Input::get('user_id'))) ? Input::get('user_id') : 0;
             $user->save();
             if (!Auth::check()):    
                 return Redirect::to('users/login')->with('success', '<strong>Sucesso</strong> Faça o login com o novo usuário');

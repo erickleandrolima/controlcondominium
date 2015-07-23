@@ -6,7 +6,7 @@
 
 <p>{{ link_to_route('apartments.create', Lang::get('apartments.add'), null, array('class' => 'btn btn-lg btn-success')) }}</p>
 
-@if ($apartments->count())
+@if (count($apartments))
 	<table class="table table-striped">
 		<thead>
 			<tr>

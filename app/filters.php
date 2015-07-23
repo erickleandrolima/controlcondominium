@@ -33,6 +33,14 @@ App::after(function($request, $response)
 |
 */
 
+Route::filter('isAdmin', function () {
+	if (!Entrust::hasRole('Admin')):
+        App::abort(404);
+	endif;	
+});
+
+Route::when('users', 'isAdmin');
+
 Route::filter('auth', function()
 {
 	if (Auth::guest()):

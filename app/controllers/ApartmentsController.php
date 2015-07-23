@@ -21,7 +21,9 @@ class ApartmentsController extends BaseController {
 	 */
 	public function index()
 	{
-		$apartments = $this->apartment->all();
+		$apartments = DB::table('apartments')
+						->where('user_id', '=', Auth::id())
+						->get();
 
 		return View::make('apartments.index', compact('apartments'));
 	}

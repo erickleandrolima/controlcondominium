@@ -13,14 +13,15 @@
 		  {{ Form::submit(Lang::get('months.generateMonths'), array('class' => 'btn btn-success')) }}
 		{{ Form::close() }}
 	</div>
-	<div class="col-md-6">
-		<h5>{{ Lang::get('months.deleteMessage') }}</h5>
-
-		{{ Form::open(array( 'method' => 'POST', 'action' => array('MonthsController@deleteMonths'))) }}
-		  {{ Form::text('year', Input::old('year'), array( 'style' => 'margin-bottom:10px; width:12%', 'maxlength' => '4', 'class'=>'form-control', 'placeholder'=> Lang::get('months.year') )) }}
-		  {{ Form::submit(Lang::get('months.deleteMonths'), array('class' => 'btn btn-danger')) }}
-		{{ Form::close() }}
-	</div>
+	@if (Entrust::hasRole('Admin'))
+		<div class="col-md-6">
+			<h5>{{ Lang::get('months.deleteMessage') }}</h5>
+			{{ Form::open(array( 'method' => 'POST', 'action' => array('MonthsController@deleteMonths'))) }}
+			  {{ Form::text('year', Input::old('year'), array( 'style' => 'margin-bottom:10px; width:12%', 'maxlength' => '4', 'class'=>'form-control', 'placeholder'=> Lang::get('months.year') )) }}
+			  {{ Form::submit(Lang::get('months.deleteMonths'), array('class' => 'btn btn-danger')) }}
+			{{ Form::close() }}
+		</div>
+	@endif	
 </div>
 
 
@@ -46,7 +47,6 @@
 					<td>{{{ $month->month_reference }}}</td>
 					<td>{{{ $month->month_name }}}</td>
 					<td>
-						{{ link_to_route('months.edit', Lang::get('app.edit'), array($month->id), array('class' => 'btn btn-info')) }}
 						@if ($month->casted == 0)
 							{{ link_to('month/'. $month->month_reference .'/cast', Lang::get('app.throw'), 'class="cast btn btn-warning"') }}
 						@endif

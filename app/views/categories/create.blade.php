@@ -25,6 +25,8 @@
             </div>
         </div>
 
+        {{ Form::hidden('user_id', Auth::id()) }}
+
 
 <div class="form-group">
     <label class="col-sm-2 control-label">&nbsp;</label>

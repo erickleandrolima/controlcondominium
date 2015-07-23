@@ -24,6 +24,7 @@ class DwellersController extends BaseController {
 	{
 		$dwellers = DB::table('dwellers')
 						->orderBy('number_apartament', 'ASC')
+						->where('user_id', '=', Auth::id())
 						->simplePaginate(10);
 
 		return View::make('dwellers.index', compact('dwellers'));
@@ -50,9 +51,7 @@ class DwellersController extends BaseController {
 	{
 		$input = Input::all();
 
-		$createRules = str_replace(':number', $input['number_apartament'] , Dweller::$rules['update']);
-
-		$validation = Validator::make($input, $createRules, BaseController::getCustomErrorMessages());
+		$validation = Validator::make($input, Dweller::$rules, BaseController::getCustomErrorMessages());
 
 		if ($validation->passes())
 		{
@@ -83,11 +82,13 @@ class DwellersController extends BaseController {
 							->where('id_dweller', $id)
 							->where('status_expense', 0)
 							->where('type_expense', 0)
+							->where('user_id', '=', Auth::id())
 							->get();
 
 		$decrease = DB::table('dweller_expenses')
 							->select(DB::raw('sum(credit) as total'))
 							->where('id_dweller', $id)
+							->where('user_id', '=', Auth::id())
 							->get();					
 
 		$balance = ceil($increase[0]->total - $decrease[0]->total);
@@ -97,11 +98,13 @@ class DwellersController extends BaseController {
 					->where('id_dweller', $id)
 					->where('type_expense', 0)
 					->where('type_expense', 1)
+					->where('user_id', '=', Auth::id())
 					->get();
 
 		$expenses = DB::table('dweller_expenses')
 								->select(DB::raw('*, sum(value) as total'))
 								->where('id_dweller', $id)
+								->where('user_id', '=', Auth::id())
 								->groupBy('date_expense')
 								->orderBy('date_expense', 'desc')
 								->get();
@@ -139,21 +142,11 @@ class DwellersController extends BaseController {
 	{
 		$input = array_except(Input::all(), '_method');
 		
-		$dweller = Dweller::find($id);
-		
-		// Verify if changed number apartament, apply different validates
-
-		if ($dweller->number_apartament == $input['number_apartament']):
-			$updateRules = str_replace(':number', $input['number_apartament'] , Dweller::$rules['create']);
-		else:
-			$updateRules = str_replace(':number', $input['number_apartament'] , Dweller::$rules['update']);
-		endif;	
-
-		$validation = Validator::make($input, $updateRules, BaseController::getCustomErrorMessages());
+		$validation = Validator::make($input, Dweller::$rules, BaseController::getCustomErrorMessages());
 
 		if ($validation->passes())
 		{
-			$dweller = $this->dweller->find($id);
+			$dweller = Dweller::find($id);
 			$dweller->update($input);
 
 			return Redirect::route('dwellers.index', $id)
@@ -195,6 +188,7 @@ class DwellersController extends BaseController {
 					->where('id_dweller', $id)
 					->where('status_expense', 0)
 					->where('type_expense', 0)
+					->where('user_id', '=', Auth::id())
 					->get();
 
 		$decrease = DB::table('dweller_expenses')
@@ -202,6 +196,7 @@ class DwellersController extends BaseController {
 					->where('id_dweller', $id)
 					->where('status_expense', 1)
 					->where('type_expense', 1)
+					->where('user_id', '=', Auth::id())
 					->get();					
 
 		$balance = $increase[0]->total - $decrease[0]->total;
@@ -209,12 +204,14 @@ class DwellersController extends BaseController {
 		$sum = DB::table('dweller_expenses')
 					->select(DB::raw('sum(value) as total'))
 					->where('id_dweller', $id)
+					->where('user_id', '=', Auth::id())
 					->where('type_expense', 0)
 					->get();
 
 		$expenses = DB::table('dweller_expenses')
 					->select(DB::raw('*'))
 					->where('id_dweller', $id)
+					->where('user_id', '=', Auth::id())
 					->where('status_expense', 1)
 					->get();
 

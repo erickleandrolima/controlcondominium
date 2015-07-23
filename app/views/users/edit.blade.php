@@ -18,6 +18,10 @@
 
 {{ Form::model($user, array('class' => 'form-horizontal', 'method' => 'PATCH', 'route' => array('users.update', $user->id))) }}
 
+        @if (!Entrust::hasRole('Admin'))
+            {{ Form::hidden('user_id', Auth::id()) }}
+        @endif    
+
         <div class="form-group">
             {{ Form::label(Lang::get('users.firstName'), Lang::get('users.firstName'), array('class'=>'col-md-2 control-label')) }}
             <div class="col-sm-10">

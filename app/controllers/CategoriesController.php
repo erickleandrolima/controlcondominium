@@ -22,7 +22,7 @@ class CategoriesController extends BaseController {
 	 */
 	public function index()
 	{
-		$categories = Category::simplePaginate(10);
+		$categories = Category::where('user_id', '=', Auth::id())->simplePaginate(10);
 
 		return View::make('categories.index', compact('categories'));
 	}
@@ -62,19 +62,6 @@ class CategoriesController extends BaseController {
 	}
 
 	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		$category = $this->category->findOrFail($id);
-
-		return View::make('categories.show', compact('category'));
-	}
-
-	/**
 	 * Show the form for editing the specified resource.
 	 *
 	 * @param  int  $id
@@ -108,7 +95,7 @@ class CategoriesController extends BaseController {
 			$category = $this->category->find($id);
 			$category->update($input);
 
-			return Redirect::route('categories.show', $id)
+			return Redirect::route('categories.index')
 											->with('success', '<strong>Sucesso</strong> Registro atualizado!');;
 		}
 

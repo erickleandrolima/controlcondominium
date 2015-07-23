@@ -25,6 +25,8 @@
             </div>
         </div>
 
+         {{ Form::hidden('user_id', Auth::id()) }}
+
         <div class="form-group">
             {{ Form::label(Lang::get('app.status'), Lang::get('app.status'), array('class'=>'col-md-2 control-label')) }}
             <div class="col-sm-10">
