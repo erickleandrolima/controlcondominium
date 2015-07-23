@@ -15,9 +15,9 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th>{{ Lang::get('dwellers.name') }}</th>
+				<th>{{ Lang::get('app.name') }}</th>
 				<th>{{ Lang::get('dwellers.numberApartament') }}</th>
-				<th>{{ Lang::get('dwellers.situation') }}</th>
+				<th>{{ Lang::get('app.status') }}</th>
 				<th>&nbsp;</th>
 			</tr>
 		</thead>

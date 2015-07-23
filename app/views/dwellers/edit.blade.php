@@ -19,14 +19,14 @@
 {{ Form::model($dweller, array('class' => 'form-horizontal', 'method' => 'PATCH', 'route' => array('dwellers.update', $dweller->id))) }}
 
         <div class="form-group">
-            {{ Form::label(Lang::get('dwellers.name'), Lang::get('dwellers.name'), array('class'=>'col-md-2 control-label')) }}
+            {{ Form::label(Lang::get('app.name'), Lang::get('app.name'), array('class'=>'col-md-2 control-label')) }}
             <div class="col-sm-10">
-              {{ Form::text('name', Input::old('name'), array('class'=>'form-control', 'placeholder'=> Lang::get('dwellers.name'))) }}
+              {{ Form::text('name', Input::old('name'), array('class'=>'form-control', 'placeholder'=> Lang::get('app.name'))) }}
             </div>
         </div>
 
         <div class="form-group">
-            {{ Form::label(Lang::get('dwellers.situation'), Lang::get('dwellers.situation'), array('class'=>'col-md-2 control-label')) }}
+            {{ Form::label(Lang::get('app.status'), Lang::get('app.status'), array('class'=>'col-md-2 control-label')) }}
             <div class="col-sm-10">
                 {{ Form::select('situation', [
                    '1' => 'Ocupado',
