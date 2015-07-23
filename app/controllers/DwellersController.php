@@ -49,7 +49,10 @@ class DwellersController extends BaseController {
 	public function store()
 	{
 		$input = Input::all();
-		$validation = Validator::make($input, Dweller::$rules);
+
+		$createRules = str_replace(':number', $input['number_apartament'] , Dweller::$rules['update']);
+
+		$validation = Validator::make($input, $createRules, BaseController::getCustomErrorMessages());
 
 		if ($validation->passes())
 		{
@@ -62,7 +65,7 @@ class DwellersController extends BaseController {
 		return Redirect::route('dwellers.create')
 			->withInput()
 			->withErrors($validation)
-			->with('message', 'There were validation errors.');
+			->with('message', 'Erro ao inserir os dados.');
 	}
 
 	/**
@@ -135,8 +138,18 @@ class DwellersController extends BaseController {
 	public function update($id)
 	{
 		$input = array_except(Input::all(), '_method');
-		$updateRules = str_replace(':number', $input['number_apartament'] , Dweller::$rules['update']);
-		$validation = Validator::make($input, $updateRules);
+		
+		$dweller = Dweller::find($id);
+		
+		// Verify if changed number apartament, apply different validates
+
+		if ($dweller->number_apartament == $input['number_apartament']):
+			$updateRules = str_replace(':number', $input['number_apartament'] , Dweller::$rules['create']);
+		else:
+			$updateRules = str_replace(':number', $input['number_apartament'] , Dweller::$rules['update']);
+		endif;	
+
+		$validation = Validator::make($input, $updateRules, BaseController::getCustomErrorMessages());
 
 		if ($validation->passes())
 		{
@@ -150,7 +163,7 @@ class DwellersController extends BaseController {
 		return Redirect::route('dwellers.edit', $id)
 			->withInput()
 			->withErrors($validation)
-			->with('message', 'There were validation errors.');
+			->with('message', 'Erro ao atualizar os dados.');
 	}
 
 	/**

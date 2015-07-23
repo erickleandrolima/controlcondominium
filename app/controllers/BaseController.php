@@ -77,4 +77,13 @@ class BaseController extends Controller {
 				</form>';
 	}
 
+	public static function getCustomErrorMessages()
+	{
+		return array(
+			'name.required' => 'nome é obrigatório',
+			'situation.required' => 'situação é obrigatória',
+			'number_apartament.unique' => 'número do apartamento já foi definido para outro registro do sistema, este atributo é unico para cada registro',			
+		);
+	}
+
 }
