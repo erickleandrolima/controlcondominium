@@ -61,6 +61,7 @@ body {
 .main {
 	display: inline-block;
 	vertical-align: top;
+	margin-top: 20px;
 }
 
 .side-bar ul {
