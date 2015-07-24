@@ -49,7 +49,7 @@ class MonthsController extends BaseController {
 			// update status this month to released and updated cost value for this month
 			$this->castMonth($date, $total_by_dweller);
 
-			foreach (Dweller::all() as $dweller):
+			foreach (Dweller::where('user_id', '=', Auth::id())->get() as $dweller):
 
 				//throw expenses for each dweller
 				DB::table('dweller_expenses')
@@ -59,33 +59,9 @@ class MonthsController extends BaseController {
 							'date_expense' => $date,
 							// verify if apartament is occupied, when not divide this value for half
 							'value' => ($dweller->situation == 1) ? $total_by_dweller : $total_by_dweller / 2,
+							'user_id' => Auth::id(),
 						)
 				);
-
-				$extras = DB::table('expenses')
-									->where('id_dweller', $dweller->id)
-									->where('date_reference', $date)
-									->get();
-
-				// if extras expenses not empty, throw extra expenses this dweller
-				if (!empty($extras)) {
-
-					foreach ($extras as $extra):
-
-						DB::table('dweller_expenses')
-						->insert(
-							array(
-								'id_dweller' => $dweller->id,
-								'date_expense' => $date,
-								'value' => $extra->value,
-								'type_expense' => 1,
-								'created_at' => 'NOW()',
-							)
-						);
-
-					endforeach;	
-
-				}					
 
 			endforeach;
 
@@ -121,8 +97,15 @@ class MonthsController extends BaseController {
 
 	public function rebaseCalc($date)
 	{
-		DB::table('dweller_expenses')->where('date_expense', $date)->delete();
-		DB::table('months')->where('month_reference', $date)->update(['casted' => 0, 'cost' => 0]);
+		DB::table('dweller_expenses')
+			->where('date_expense', $date)
+			->where('user_id', Auth::id())
+			->delete();
+
+		DB::table('months')
+			->where('month_reference', $date)
+			->update(['casted' => 0, 'cost' => 0]);
+
 		return Redirect::route('months.index')
 						->with('success', '<strong>Sucesso</strong> Recalcule o mês escolhido!');
 	}

@@ -23,6 +23,10 @@
 				<td>Relatório débitos de moradores</td>
 				<td>{{ link_to('report/debtsDwellers', Lang::get('reports.generate'), 'class="cast btn btn-warning"') }}</td>
 			</tr>
+			<tr>
+				<td>Relatório de despesas em aberto</td>
+				<td>{{ link_to('report/openExpenses', Lang::get('reports.generate'), 'class="cast btn btn-warning"') }}</td>
+			</tr>
 		</tbody>
 	</table>
 @stop

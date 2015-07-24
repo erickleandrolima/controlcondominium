@@ -55,4 +55,8 @@ Route::get('report/debtsDwellers', 'ReportsController@debtsDwellers');
 
 Route::post('report/debtsDwellers', 'ReportsController@debtsDwellersFilter');
 
+Route::get('report/openExpenses', 'ReportsController@openExpenses');
+
+Route::post('report/openExpenses', 'ReportsController@openExpensesFilter');
+
 Route::resource('apartments', 'ApartmentsController');
