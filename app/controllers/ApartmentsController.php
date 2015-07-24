@@ -134,8 +134,8 @@ class ApartmentsController extends BaseController {
 
 	public function getApartments()
 	{
-		if (!empty(Apartment::all()->toArray())):
-			foreach (Apartment::all()->toArray() as $item):
+		if (!empty(Apartment::where('user_id', '=', (Entrust::hasRole('Admin')) ? 0 : Auth::id())->get()->toArray())):
+			foreach (Apartment::where('user_id', '=', (Entrust::hasRole('Admin')) ? 0 : Auth::id())->get()->toArray() as $item):
 				$arr[$item['number_apartment']] = $item['number_apartment'];			
 			endforeach;
 		else:

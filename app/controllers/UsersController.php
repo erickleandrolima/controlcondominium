@@ -13,7 +13,7 @@ class UsersController extends BaseController {
     {
         $users = DB::table('users')
                         ->orderBy('firstname', 'ASC')
-                        ->where('user_id', '=', Auth::id())
+                        ->where('user_id', '=', (Entrust::hasRole('Admin')) ? 0 : Auth::id())
                         ->simplePaginate(10);
 
         return View::make('users.index', compact('users'));
