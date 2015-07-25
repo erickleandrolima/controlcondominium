@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddStatusForUsersTable extends Migration {
+class RemoveResidentials extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,9 +12,7 @@ class AddStatusForUsersTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::table('users', function(Blueprint $table) {
-     		$table->integer('situation')->default(0);
-     	});
+		Schema::drop('residentials');
 	}
 
 	/**
@@ -24,9 +22,7 @@ class AddStatusForUsersTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::table('users', function(Blueprint $table) {
-     		$table->dropColumn('situation');
-     	});
+		//
 	}
 
 }
