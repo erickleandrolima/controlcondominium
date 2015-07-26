@@ -38,7 +38,7 @@ class ExpensesController extends BaseController {
 	 */
 	public function create()
 	{
-		$months = $this->getMonths();
+		$months = $this->getOpenMonths();
 
 		$categories = $this->getCategories();
 
@@ -100,7 +100,7 @@ class ExpensesController extends BaseController {
 	{
 		$expense = $this->expense->find($id);
 
-		$months = $this->getMonths();
+		$months = $this->getOpenMonths();
 
 		$categories = $this->getCategories();
 
@@ -275,6 +275,43 @@ class ExpensesController extends BaseController {
 		}
 
 		return $categories;
+
+	}
+
+	public function getOpenMonths()
+	{
+		$Allmonths = DB::table('months')
+					 ->select('*')
+					 ->orderBy('month_reference', 'desc')
+					 ->where('casted', '=', 0)
+					 ->where('user_id', '=', Auth::id())
+					 ->get();
+
+		$months[0] = 'Selecione o mês de referência';
+
+		foreach($Allmonths as $month) {
+    		$months[$month->month_reference] = $month->month_name;
+		}
+
+		return $months;
+
+	}
+
+	public function getMonthsForExpensesReport()
+	{
+		$Allmonths = DB::table('months')
+					 ->select('*')
+					 ->orderBy('month_reference', 'desc')
+					 ->where('user_id', '=', Auth::id())
+					 ->get();
+
+		$months[0] = 'Todos os meses';
+
+		foreach($Allmonths as $month) {
+    		$months[$month->month_reference] = $month->month_name;
+		}
+
+		return $months;
 
 	}
 

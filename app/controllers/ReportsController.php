@@ -109,7 +109,7 @@ class ReportsController extends BaseController {
 
 	public function openExpenses()
 	{
-		$select = App::make('ExpensesController')->getMonths();
+		$select = App::make('ExpensesController')->getMonthsForExpensesReport();
 
 		return View::make('reports.openExpensesFilter', compact('select'));
 	}
@@ -118,22 +118,43 @@ class ReportsController extends BaseController {
 	{
 		$input = array_except(Input::all(), '__method');
 
-		$expenses = DB::table('expenses')
+		if (!empty($input['filter'])):
+				$expenses = DB::table('expenses')
+								->join('months', 'months.month_reference', '=', 'expenses.date_reference')
+								->where('date_reference', $input['filter'])
+								->where('expenses.user_id', Auth::id())
+								->where('status', 0)
+								->get();
+
+				$total = DB::table('expenses')
+							->select(DB::raw('sum(value) as debt'))
+							->join('months', 'months.month_reference', '=', 'expenses.date_reference')
+							->where('date_reference', $input['filter'])
+							->where('expenses.user_id', Auth::id())
+							->where('status', 0)
+							->get();
+
+			$all = false;				
+
+		else:
+
+			$all = true;
+			
+			$expenses = DB::table('expenses')
+							->join('months', 'months.month_reference', '=', 'expenses.date_reference')
+							->where('expenses.user_id', Auth::id())
+							->where('status', 0)
+							->get();
+
+			$total = DB::table('expenses')
+						->select(DB::raw('sum(value) as debt'))
 						->join('months', 'months.month_reference', '=', 'expenses.date_reference')
-						->where('date_reference', $input['filter'])
 						->where('expenses.user_id', Auth::id())
 						->where('status', 0)
 						->get();
+		endif;
 
-		$total = DB::table('expenses')
-					->select(DB::raw('sum(value) as debt'))
-					->join('months', 'months.month_reference', '=', 'expenses.date_reference')
-					->where('date_reference', $input['filter'])
-					->where('expenses.user_id', Auth::id())
-					->where('status', 0)
-					->get();							
-
-		$html = View::make('reports.openExpenses', compact('expenses', 'total'));				
+		$html = View::make('reports.openExpenses', compact('expenses', 'total', 'all'));				
 		$pdf = App::make('dompdf');
 		$pdf->loadHtml($html);
 		return $pdf->stream();	

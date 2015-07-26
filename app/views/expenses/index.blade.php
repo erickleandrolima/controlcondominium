@@ -19,6 +19,7 @@
 				<th>{{ Lang::get('expenses.monthReference') }}</th>
 				<th>{{ Lang::get('expenses.description') }}</th>
 				<th>{{ Lang::get('expenses.value') }}</th>
+				<th> {{ Lang::get('app.status') }} </th>
 				<th>&nbsp;</th>
 			</tr>
 		</thead>
@@ -29,6 +30,7 @@
 					<td>{{{ $expense->month_name }}}</td>
 					<td>{{{ $expense->description }}}</td>
 					<td>{{{ number_format(ceil((float)$expense->value), 2, ',', '') }}}</td>
+					<td><img width="25" src="images/{{{ ($expense->status == 1) ? 'on.png' : 'off.png' }}}" alt="Status"></td>
                     <td>
                         {{ Form::open(array('style' => 'display: inline-block;', 'method' => 'DELETE', 'route' => array('expenses.destroy', $expense->id))) }}
                             {{ Form::submit(Lang::get('app.delete'), array('class' => 'btn btn-danger')) }}
