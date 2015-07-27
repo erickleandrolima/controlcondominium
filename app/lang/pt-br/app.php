@@ -63,4 +63,6 @@ return array(
 
 	'print' => 'Imprimir',
 
+	'file' => 'Documento',
+
 );

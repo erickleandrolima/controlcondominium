@@ -108,12 +108,14 @@ class ExpensesController extends BaseController {
 
 		$statusList = $this->getStatusList();
 
+		$path = (!empty($expense->document)) ? $expense->document : null;
+
 		if (is_null($expense))
 		{
 			return Redirect::route('expenses.index');
 		}
 
-		return View::make('expenses.edit', compact('expense', 'months', 'categories', 'month_id', 'statusList'));
+		return View::make('expenses.edit', compact('expense', 'months', 'categories', 'month_id', 'statusList', 'path'));
 	}
 
 	/**
@@ -129,7 +131,21 @@ class ExpensesController extends BaseController {
 
 		if ($validation->passes())
 		{
-			$expense = $this->expense->find($id);
+
+			$expense = $this->expense->find($id);							    
+			
+			if(!is_null(Input::file('document'))):
+
+				$destinationPath = 'public/uploads/'; // upload path
+		      	$extension = Input::file('document')->getClientOriginalExtension(); // getting image extension
+			    $fileName = rand(11111,99999).'.'.$extension; // renameing image
+			    Input::file('document')->move($destinationPath, $fileName); // uploading file to given path
+			    $input['document'] = 'uploads/' . $fileName;
+			
+			else:
+			    $input['document'] = $expense->document;
+			endif;    
+
 			$expense->update($input);
 			$this->updateMonthId($input, $id);
 

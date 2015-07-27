@@ -16,7 +16,7 @@
     </div>
 </div>
 
-{{ Form::model($expense, array('class' => 'form-horizontal', 'method' => 'PATCH', 'route' => array('expenses.update', $expense->id))) }}
+{{ Form::model($expense, array('class' => 'form-horizontal', 'method' => 'PATCH', 'files' => true, 'route' => array('expenses.update', $expense->id))) }}
 
     <div class="form-group">
         {{ Form::label(Lang::get('expenses.date'), Lang::get('expenses.date'), array('class'=>'col-md-2 control-label')) }}
@@ -63,12 +63,26 @@
     </div>
 
     <div class="form-group">
+        {{ Form::label(Lang::get('app.file'), Lang::get('app.file'), array('class'=>'col-md-2 control-label')) }}
+        <div class="col-sm-10">
+             {{Form::file('document') }}
+        </div>
+    </div>
+
+    <div class="form-group">
         <label class="col-sm-2 control-label">&nbsp;</label>
         <div class="col-sm-10">
           {{ Form::submit(Lang::get('app.update'), array('class' => 'btn btn-lg btn-primary')) }}
           {{ link_to_route('expenses.index', Lang::get('app.cancel'), null, array('class' => 'btn btn-lg btn-default')) }}
         </div>
     </div>
+
+    @if (!is_null($path))
+        <br>
+        <br>
+        <h4> Documento anexado a esta despesa: </h4>
+        <img src="{{ $path }}">
+    @endif
 
 {{ Form::close() }}
 
