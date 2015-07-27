@@ -61,4 +61,6 @@ return array(
 
 	'name' => 'Nome',
 
+	'print' => 'Imprimir',
+
 );

@@ -38,6 +38,7 @@
 				<th>{{ Lang::get('months.referenceDate') }}</th>
 				<th>{{ Lang::get('months.monthAndYear') }}</th>
 				<th>&nbsp;</th>
+				<th>&nbsp;</th>
 			</tr>
 		</thead>
 
@@ -48,11 +49,17 @@
 					<td>{{{ $month->month_name }}}</td>
 					<td>
 						@if ($month->casted == 0)
-							{{ link_to('month/'. $month->month_reference .'/cast', Lang::get('app.throw'), 'class="cast btn btn-warning"') }}
+							{{ link_to('month/'. $month->month_reference .'/cast', Lang::get('app.throw'), array('style' => 'display:inline-block', 'class' => 'cast btn btn-warning') ) }}
 						@endif
 						@if ($month->casted == 1)
-							{{ link_to('month/'. $month->month_reference .'/rebase', Lang::get('app.recalculate'), 'class="cast btn btn-warning"') }}
+							{{ link_to('month/'. $month->month_reference .'/rebase', Lang::get('app.recalculate'), array('style' => 'display:inline-block', 'class' => 'cast btn btn-warning')) }}
 						@endif	
+					</td>
+					<td>
+						{{ Form::open(array('style' => 'display: inline-block;', 'method' => 'post', 'url' => 'report/mural')) }}
+							{{ Form::hidden('filter', $month->month_reference) }}
+						    {{ Form::submit(Lang::get('app.print'), array('class' => 'btn btn-primary')) }}
+						{{ Form::close() }}
 					</td>
 				</tr>
 			@endforeach

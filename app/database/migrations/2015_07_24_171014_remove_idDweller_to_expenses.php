@@ -27,7 +27,7 @@ class RemoveIdDwellerToExpenses extends Migration {
 	{
 		Schema::table('expenses', function(Blueprint $table)
 		{
-			$table->integer('id_dweller');
+			$table->dropColumn('id_dweller');
 		});
 	}
 
