@@ -55,12 +55,18 @@
 							{{ link_to('month/'. $month->month_reference .'/rebase', Lang::get('app.recalculate'), array('style' => 'display:inline-block', 'class' => 'cast btn btn-warning')) }}
 						@endif	
 					</td>
-					<td>
-						{{ Form::open(array('style' => 'display: inline-block;', 'method' => 'post', 'url' => 'report/mural')) }}
-							{{ Form::hidden('filter', $month->month_reference) }}
-						    {{ Form::submit(Lang::get('app.print'), array('class' => 'btn btn-primary')) }}
-						{{ Form::close() }}
-					</td>
+					@if ($month->casted == 1)
+						<td>
+							{{ Form::open(array('style' => 'display: inline-block;', 'method' => 'post', 'url' => 'report/mural')) }}
+								{{ Form::hidden('filter', $month->month_reference) }}
+							    {{ Form::submit(Lang::get('app.print'), array('class' => 'btn btn-primary')) }}
+							{{ Form::close() }}
+						</td>
+					@else
+						<td>
+							&nbsp;
+						</td>
+					@endif	
 				</tr>
 			@endforeach
 		</tbody>

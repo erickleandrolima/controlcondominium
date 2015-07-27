@@ -43,30 +43,39 @@ class MonthsController extends BaseController {
 			// sum total expenses for this month
 			$expense = App::make('ExpensesController')->sum($date);
 
-			// calc total and divider for total dwellers
-			$total_by_dweller = $expense[0]->total / DB::table('dwellers')->count();
+			if (!empty($expense)):
 
-			// update status this month to released and updated cost value for this month
-			$this->castMonth($date, $total_by_dweller);
+				// calc total and divider for total dwellers
+				$total_by_dweller = $expense[0]->total / DB::table('dwellers')->count();
 
-			foreach (Dweller::where('user_id', '=', Auth::id())->get() as $dweller):
+				// update status this month to released and updated cost value for this month
+				$this->castMonth($date, $total_by_dweller);
 
-				//throw expenses for each dweller
-				DB::table('dweller_expenses')
-					->insert(
-						array(
-							'id_dweller' => $dweller->id,
-							'date_expense' => $date,
-							// verify if apartament is occupied, when not divide this value for half
-							'value' => ($dweller->situation == 1) ? $total_by_dweller : $total_by_dweller / 2,
-							'user_id' => Auth::id(),
-						)
-				);
+				foreach (Dweller::where('user_id', '=', Auth::id())->get() as $dweller):
 
-			endforeach;
+					//throw expenses for each dweller
+					DB::table('dweller_expenses')
+						->insert(
+							array(
+								'id_dweller' => $dweller->id,
+								'date_expense' => $date,
+								// verify if apartament is occupied, when not divide this value for half
+								'value' => ($dweller->situation == 1) ? $total_by_dweller : $total_by_dweller / 2,
+								'user_id' => Auth::id(),
+							)
+					);
 
-			return Redirect::route('months.index')
-											->with('success', '<strong>Sucesso</strong> Lançamento realizado!');
+				endforeach;
+
+				return Redirect::route('months.index')
+												->with('success', '<strong>Sucesso</strong> Lançamento realizado!');
+			else:
+				
+				return Redirect::route('months.index')
+								->with('message', 
+									'<strong>Erro</strong> Não há despesas para lançar para o mês escolhido: ' . 
+									BaseController::getMonthNameExtension($date, 2));
+			endif;									
 		
 		endif;
 
