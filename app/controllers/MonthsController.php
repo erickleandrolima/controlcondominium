@@ -35,49 +35,62 @@ class MonthsController extends BaseController {
 	 */
 	public function cast($date)
 	{
-		// Verify if exists due date for this month
-		$haveDueDate = Month::where('month_reference', '=', $date)->where('due_date', '!=', '0000-00-00')->count();
+		// sum total expenses for this month
+		$expense = App::make('ExpensesController')->sum($date);
 
-		if ($haveDueDate > 0):
-			
-			// sum total expenses for this month
-			$expense = App::make('ExpensesController')->sum($date);
+		if (!empty($expense)):
 
-			if (!empty($expense)):
+			// calc total and divider for total dwellers
+
+			$total_by_dweller = $expense[0]->total / Config::get('parameters.NumberOfDwellers');
+
+			// total of empty apartments
+
+			$total_empty = Dweller::where('situation', 0)->count();
+
+			// if exists empty apartments, change the calc
+
+			if ($total_empty > 0):
+
+				$halfAmount = $total_by_dweller / 2;
+
+				$rest = $halfAmount * $total_empty;
+
+				$newTotal = $rest + $expense[0]->total;
 
 				// calc total and divider for total dwellers
-				$total_by_dweller = $expense[0]->total / DB::table('dwellers')->count();
+				$total_by_dweller = $newTotal / Config::get('parameters.NumberOfDwellers');
 
-				// update status this month to released and updated cost value for this month
-				$this->castMonth($date, $total_by_dweller);
+			endif;	
 
-				foreach (Dweller::where('user_id', '=', Auth::id())->get() as $dweller):
+			// update status this month to released and updated cost value for this month
+			$this->castMonth($date, $total_by_dweller);
 
-					//throw expenses for each dweller
-					DB::table('dweller_expenses')
-						->insert(
-							array(
-								'id_dweller' => $dweller->id,
-								'date_expense' => $date,
-								// verify if apartament is occupied, when not divide this value for half
-								'value' => ($dweller->situation == 1) ? $total_by_dweller : $total_by_dweller / 2,
-								'user_id' => Auth::id(),
-							)
-					);
+			foreach (Dweller::where('user_id', '=', Auth::id())->get() as $dweller):
 
-				endforeach;
+				//throw expenses for each dweller
+				DB::table('dweller_expenses')
+					->insert(
+						array(
+							'id_dweller' => $dweller->id,
+							'date_expense' => $date,
+							// verify if apartament is occupied, when not divide this value for half
+							'value' => ($dweller->situation == 1) ? $total_by_dweller : $halfAmount,
+							'user_id' => Auth::id(),
+						)
+				);
 
-				return Redirect::route('months.index')
-												->with('success', '<strong>Sucesso</strong> Lançamento realizado!');
-			else:
-				
-				return Redirect::route('months.index')
-								->with('message', 
-									'<strong>Erro</strong> Não há despesas para lançar para o mês escolhido: ' . 
-									BaseController::getMonthNameExtension($date, 2));
-			endif;									
-		
-		endif;
+			endforeach;
+
+			return Redirect::route('months.index')
+											->with('success', '<strong>Sucesso</strong> Lançamento realizado!');
+		else:
+			
+			return Redirect::route('months.index')
+							->with('message', 
+								'<strong>Erro</strong> Não há despesas para lançar para o mês escolhido: ' . 
+								BaseController::getMonthNameExtension($date, 2));
+		endif;									
 
 		return Redirect::route('months.index')
 										->with('message', 'Você precisa cadastrar a data de vencimento antes de lançar');
