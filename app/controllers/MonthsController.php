@@ -22,7 +22,7 @@ class MonthsController extends BaseController {
 	 */
 	public function index()
 	{
-		$months = Month::orderBy('month_reference', 'desc')->where('user_id', '=', Auth::id())->simplePaginate(10);
+		$months = Month::orderBy('month_reference', 'asc')->where('user_id', '=', Auth::id())->simplePaginate(10);
 
 		return View::make('months.index', compact('months'));
 	}

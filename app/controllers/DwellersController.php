@@ -53,9 +53,11 @@ class DwellersController extends BaseController {
 
 		$validation = Validator::make($input, Dweller::$rules, BaseController::getCustomErrorMessages());
 
+
 		if ($validation->passes())
 		{
 			$this->dweller->create($input);
+			App::make('ApartmentsController')->setAssigned($input['number_apartament']);
 
 			return Redirect::route('dwellers.index')
 											->with('success', '<strong>Sucesso</strong> Registro inserido!');
@@ -148,6 +150,7 @@ class DwellersController extends BaseController {
 		{
 			$dweller = Dweller::find($id);
 			$dweller->update($input);
+			App::make('ApartmentsController')->setAssigned($input['number_apartament']);
 
 			return Redirect::route('dwellers.index', $id)
 											->with('success', '<strong>Sucesso</strong> Registro atualizado!');

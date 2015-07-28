@@ -134,15 +134,22 @@ class ApartmentsController extends BaseController {
 
 	public function getApartments()
 	{
-		if (!empty(Apartment::where('user_id', '=', (Entrust::hasRole('Admin')) ? 0 : Auth::id())->get()->toArray())):
-			foreach (Apartment::where('user_id', '=', (Entrust::hasRole('Admin')) ? 0 : Auth::id())->get()->toArray() as $item):
+		$arr = [];
+
+		if (!empty(Apartment::where('user_id', '=', Auth::id())->where('assigned', 0)->get()->toArray())):
+			foreach (Apartment::where('user_id', '=', Auth::id())->where('assigned', 0)->get()->toArray() as $item):
 				$arr[$item['number_apartment']] = $item['number_apartment'];			
 			endforeach;
-		else:
-			$arr = array();
 		endif;	
 
 		return $arr;
+	}
+
+	public function setAssigned($number_apartment)
+	{
+		$apartment = Apartment::where('number_apartment', $number_apartment)->where('user_id', Auth::id())->first();
+		$apartment->assigned = 1;
+		return $apartment->save();
 	}
 	
 }

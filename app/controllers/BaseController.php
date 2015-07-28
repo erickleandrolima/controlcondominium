@@ -82,7 +82,7 @@ class BaseController extends Controller {
 		return array(
 			'name.required' => 'nome é obrigatório',
 			'situation.required' => 'situação é obrigatória',
-			'number_apartament.unique' => 'número do apartamento já foi definido para outro registro do sistema, este atributo é unico para cada registro',			
+			'number_apartament.required' => 'número do apartamento é obrigatório, cadastre todos os apartamentos antes de cadastrar os moradores',			
 		);
 	}
 
