@@ -128,7 +128,7 @@ class DwellersController extends BaseController {
 			return Redirect::route('dwellers.index');
 		}
 
-		$apartments = App::make('ApartmentsController')->getApartments();;
+		$apartments = App::make('ApartmentsController')->getApartments($assigned = false);
 
 		return View::make('dwellers.edit', compact('dweller', 'apartments'));
 	}
@@ -148,11 +148,36 @@ class DwellersController extends BaseController {
 		if ($validation->passes())
 		{
 			$dweller = Dweller::find($id);
-			$dweller->update($input);
-			App::make('ApartmentsController')->setAssigned($input['number_apartament']);
 
-			return Redirect::route('dwellers.index', $id)
-											->with('success', '<strong>Sucesso</strong> Registro atualizado!');
+			if ($dweller->number_apartament == $input['number_apartament']):
+
+				$dweller->update($input);
+				App::make('ApartmentsController')->setAssigned($input['number_apartament']);
+
+				return Redirect::route('dwellers.index')
+												->with('success', '<strong>Sucesso</strong> Registro atualizado!');
+			else:
+
+				$check = Dweller::where('number_apartament', $input['number_apartament'])
+								->where('user_id', Auth::id())
+							    ->first();
+				
+				if (!is_null($check)):
+
+					return Redirect::route('dwellers.edit', $id)
+													->with('message', '<strong>Erro</strong> Esse número de apartamento já pertence a outro morador!');
+				else:							  
+
+					$dweller->update($input);
+					App::make('ApartmentsController')->setAssigned($input['number_apartament']);
+
+					return Redirect::route('dwellers.index')
+								   ->with('success', '<strong>Sucesso</strong> Registro atualizado!');
+
+				endif;
+
+			endif;
+
 		}
 
 		return Redirect::route('dwellers.edit', $id)
@@ -173,50 +198,5 @@ class DwellersController extends BaseController {
 
 		return Redirect::route('dwellers.index')
 										->with('success', '<strong>Sucesso</strong> Registro excluído!');
-	}
-
-		/**
-	 * Display history the specified dweller.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function history($id)
-	{
-		$dweller = $this->dweller->findOrFail($id);
-
-		$increase = DB::table('dweller_expenses')
-					->select(DB::raw('sum(value) as total'))
-					->where('id_dweller', $id)
-					->where('status_expense', 0)
-					->where('type_expense', 0)
-					->where('user_id', '=', Auth::id())
-					->get();
-
-		$decrease = DB::table('dweller_expenses')
-					->select(DB::raw('sum(value) as total'))
-					->where('id_dweller', $id)
-					->where('status_expense', 1)
-					->where('type_expense', 1)
-					->where('user_id', '=', Auth::id())
-					->get();					
-
-		$balance = $increase[0]->total - $decrease[0]->total;
-
-		$sum = DB::table('dweller_expenses')
-					->select(DB::raw('sum(value) as total'))
-					->where('id_dweller', $id)
-					->where('user_id', '=', Auth::id())
-					->where('type_expense', 0)
-					->get();
-
-		$expenses = DB::table('dweller_expenses')
-					->select(DB::raw('*'))
-					->where('id_dweller', $id)
-					->where('user_id', '=', Auth::id())
-					->where('status_expense', 1)
-					->get();
-
-		return View::make('dwellers.history', compact('dweller', 'expenses', 'balance', 'sum'));
 	}
 }

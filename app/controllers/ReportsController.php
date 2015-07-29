@@ -19,7 +19,7 @@ class ReportsController extends BaseController {
 
 	public function mural()
 	{
-		$select = App::make('ExpensesController')->getMonths();
+		$select = App::make('MonthsController')->getMonths();
 
 		return View::make('reports.muralFilter', compact('select'));
 	}
@@ -109,7 +109,7 @@ class ReportsController extends BaseController {
 
 	public function openExpenses()
 	{
-		$select = App::make('ExpensesController')->getMonthsForExpensesReport();
+		$select = App::make('MonthsController')->getMonthsForExpensesReport();
 
 		return View::make('reports.openExpensesFilter', compact('select'));
 	}

@@ -46,10 +46,18 @@
             {{ Form::password('password', array('class'=>'form-control', 'placeholder'=> Lang::get('users.password'))) }}
         </div>
     </div>
+
     <div class="form-group">
         {{ Form::label(Lang::get('users.confirmPassword'), Lang::get('users.confirmPassword'), array('class'=>'col-md-2 control-label')) }}
         <div class="col-sm-10">
             {{ Form::password('password_confirmation', array('class'=>'form-control', 'placeholder'=> Lang::get('users.confirmPassword'))) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ Form::label(Lang::get('users.userRole'), Lang::get('users.userRole'), array('class'=>'col-md-2 control-label')) }}
+        <div class="col-sm-10">
+             {{Form::select('role_id', $roles, 0)}}
         </div>
     </div>
 

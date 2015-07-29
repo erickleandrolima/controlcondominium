@@ -25,21 +25,21 @@ Route::resource('expenses', 'ExpensesController');
 
 Route::resource('months', 'MonthsController');
 
-Route::get('month/{date}/cast', 'MonthsController@cast');
+Route::get('month/{date}/cast', 'MoneyController@cast');
 
-Route::get('month/{date}/rebase', 'MonthsController@rebaseCalc');
+Route::get('month/{date}/rebase', 'MoneyController@rebaseCalc');
 
 Route::post('month/generateMonths', 'MonthsController@generateMonths');
 
 Route::post('month/deleteMonths', 'MonthsController@deleteMonths');
 
-Route::get('expense/{id}/{date}/pay', 'ExpensesController@pay');
+Route::get('expense/{id}/{date}/pay', 'MoneyController@pay');
 
-Route::get('dweller/{id}/history', 'DwellersController@history');
+Route::get('dweller/{id}/history', 'MoneyController@history');
 
-Route::post('expense/parcialPay/{idExpense}/{idDweller}/{credit}', 'ExpensesController@parcialPay');
+Route::post('expense/parcialPay/{idExpense}/{idDweller}/{credit}', 'MoneyController@parcialPay');
 
-Route::post('expense/reversePayment/{idDweller}/{date}', 'ExpensesController@reversePayment');
+Route::post('expense/reversePayment/{idDweller}/{date}', 'MoneyController@reversePayment');
 
 Route::resource('categories', 'CategoriesController');
 

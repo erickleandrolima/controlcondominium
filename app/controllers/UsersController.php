@@ -39,57 +39,68 @@ class UsersController extends BaseController {
             $userRole[0] = $roleDummy;
         endif;                   
 
-        $Allroles = DB::table('roles')
-                    ->get();  
-
-       
-        $roles[0] = 'Selecione o mês de referência';
-
-        foreach($Allroles as $role) {
-            $roles[$role->id] = $role->name;
-        }
+        $roles = $this->getRoles();
 
         return View::make('users.edit', compact('user', 'roles', 'userRole'));
     }
 
     public function update($id)
     {
-        $user = User::where('id', '=', $id)->first();
-        $user->firstname = Input::get('firstname');
-        $user->lastname = Input::get('lastname');
-        $user->email = Input::get('email');
-        if (!empty(Input::get('password'))):
-            $user->password = Hash::make(Input::get('password'));
-        endif;
-        $user->situation = Input::get('situation');
-        $user->save();
+        $input = Input::all();
 
-        $findUserRole = DB::table('assigned_roles')->where('user_id', '=', $id)->get();
+        $input['role_id'] = $input['role_id'] ?: null;
 
-        if (empty($findUserRole)):
-            DB::table('assigned_roles')
-            ->insert(array(
-                'role_id' => Input::get('role_id'),
-                'user_id' => $id
-            ));
-        else:    
+        $validator = Validator::make($input, User::$rules['update'], BaseController::getCustomErrorMessages());
 
-            DB::table('assigned_roles')
-                ->where('user_id', '=', $id)
-                ->update(array('role_id' => Input::get('role_id')));
+        if ($validator->passes()):
 
-        endif;        
-                 
-        return Redirect::route('users.index')->with('success', '<strong>Sucesso</strong> dados atualizados com sucesso!');
+            $user = User::where('id', '=', $id)->first();
+            $user->firstname = Input::get('firstname');
+            $user->lastname = Input::get('lastname');
+            $user->email = Input::get('email');
+            if (!empty(Input::get('password'))):
+                $user->password = Hash::make(Input::get('password'));
+            endif;
+            $user->situation = Input::get('situation');
+            $user->save();
+
+            $findUserRole = DB::table('assigned_roles')->where('user_id', '=', $id)->get();
+
+            if (empty($findUserRole)):
+                DB::table('assigned_roles')
+                ->insert(array(
+                    'role_id' => Input::get('role_id'),
+                    'user_id' => $id
+                ));
+            else:    
+
+                DB::table('assigned_roles')
+                    ->where('user_id', '=', $id)
+                    ->update(array('role_id' => Input::get('role_id')));
+
+            endif;        
+                     
+            return Redirect::route('users.index')->with('success', '<strong>Sucesso</strong> dados atualizados com sucesso!');
+
+        endif;    
+
+        return Redirect::route('users.edit', $id)
+                        ->withInput()
+                        ->withErrors($validator)
+                        ->with('message', 'Há erros em seu cadastro');
+
     }
 
     public function create() {
-        return View::make('users.create');
+
+        $roles = $this->getRoles();
+
+        return View::make('users.create', compact('roles'));
     }
 
     public function store() {
         
-        $validator = Validator::make(Input::all(), User::$rules);
+        $validator = Validator::make(Input::all(), User::$rules['create']);
      
         if ($validator->passes()) {
 
@@ -106,6 +117,13 @@ class UsersController extends BaseController {
             $user->situation = 1;
             $user->user_id = (!empty(Input::get('user_id'))) ? Input::get('user_id') : 0;
             $user->save();
+
+            DB::table('assigned_roles')
+              ->insert([
+                'role_id' => Input::get('role_id'),
+                'user_id' => $user->id
+            ]);
+
             if (!Auth::check()):    
                 return Redirect::to('users/login')->with('success', '<strong>Sucesso</strong> Faça o login com o novo usuário');
             else:
@@ -170,5 +188,20 @@ class UsersController extends BaseController {
     public function login()
     {
         return View::make('users.login');
+    }
+
+    public function getRoles()
+    {
+        $roles = [];
+
+        $Allroles = DB::table('roles')->get();  
+        
+        $roles[0] = 'Selecione o grupo do usuário';
+
+        foreach($Allroles as $role) {
+            $roles[$role->id] = $role->name;
+        }
+
+        return $roles;
     }
 }
