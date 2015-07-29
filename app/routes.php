@@ -13,6 +13,8 @@
 
 Route::get('/', 'BaseController@index');
 
+Route::get('users/login', 'UsersController@login');
+
 Route::resource('users', 'UsersController');
 
 Route::post('users/signin', 'UsersController@signin');
@@ -58,3 +60,5 @@ Route::get('report/openExpenses', 'ReportsController@openExpenses');
 Route::post('report/openExpenses', 'ReportsController@openExpensesFilter');
 
 Route::resource('apartments', 'ApartmentsController');
+
+Route::resource('parameters', 'ParametersController');

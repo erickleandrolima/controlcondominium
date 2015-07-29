@@ -53,7 +53,7 @@ return array(
 
 	'paid' => 'Pago',
 
-	'total' => 'total',
+	'total' => 'Total',
 
 	'historyPayment' => 'Histórico de pagamentos',
 
@@ -64,5 +64,9 @@ return array(
 	'print' => 'Imprimir',
 
 	'file' => 'Documento',
+
+	'parameter' => 'Parâmetro',
+
+	'dueDate' => 'Data de vencimento',
 
 );

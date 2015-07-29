@@ -39,8 +39,6 @@ Route::filter('isAdmin', function () {
 	endif;	
 });
 
-Route::when('users', 'isAdmin');
-
 Route::filter('auth', function()
 {
 	if (Auth::guest()):

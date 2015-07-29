@@ -40,9 +40,13 @@ class MonthsController extends BaseController {
 
 		if (!empty($expense)):
 
+			$userId = Auth::id();
+
+			$parameters = Parameter::where('user_id', Auth::id())->first();
+
 			// calc total and divider for total dwellers
 
-			$total_by_dweller = $expense[0]->total / Config::get('parameters.NumberOfDwellers');
+			$total_by_dweller = $expense[0]->total / $parameters->number_apartments;
 
 			// total of empty apartments
 
@@ -59,14 +63,14 @@ class MonthsController extends BaseController {
 				$newTotal = $rest + $expense[0]->total;
 
 				// calc total and divider for total dwellers
-				$total_by_dweller = $newTotal / Config::get('parameters.NumberOfDwellers');
+				$total_by_dweller = $newTotal / $parameters->number_apartments;
 
 			endif;	
 
 			// update status this month to released and updated cost value for this month
 			$this->castMonth($date, $total_by_dweller);
 
-			foreach (Dweller::where('user_id', '=', Auth::id())->get() as $dweller):
+			foreach (Dweller::where('user_id', '=', $userId)->get() as $dweller):
 
 				//throw expenses for each dweller
 				DB::table('dweller_expenses')
@@ -76,7 +80,7 @@ class MonthsController extends BaseController {
 							'date_expense' => $date,
 							// verify if apartament is occupied, when not divide this value for half
 							'value' => ($dweller->situation == 1) ? $total_by_dweller : $halfAmount,
-							'user_id' => Auth::id(),
+							'user_id' => $userId,
 						)
 				);
 
@@ -144,28 +148,33 @@ class MonthsController extends BaseController {
 		$input =  array_except(Input::all(), '_method');
 		$year = (int) $input['year'];
 		if ($year > 1000 && $year < 3000):
+			$userId = Auth::id();
 			$start    = (new DateTime($year . '-01-01'))->modify('first day of this month');
 			$end      = (new DateTime($year + 1 . '-01-01'))->modify('first day of this month');
 			$interval = DateInterval::createFromDateString('1 month');
 			$period   = new DatePeriod($start, $interval, $end);
 			$monthNames = BaseController::$months_array;
+			$parameters = Parameter::where('user_id', $userId)->first();
 
 			foreach ($period as $dt):
 
 				$nextMonth = $dt->format('m') + 1;
 
-				$find = DB::table('months')->where('month_reference', '=', $dt->format('Y-m-d'))->get();
+				$find = DB::table('months')
+							->where('month_reference', '=', $dt->format('Y-m-d'))
+							->where('user_id', $userId)
+							->get();
 
 				if (empty($find)):
 
 					if ($nextMonth <= 9):
-						$due_date = new DateTime($year . '-0' . $nextMonth . '-20');
+						$due_date = new DateTime($year . '-0' . $nextMonth . '-' . $parameters->day_due_date);
 						$due_date = $due_date->format('Y-m-d');
 					elseif ($nextMonth > 12):
-						$due_date = new DateTime($year + 1 . '-01-20');
+						$due_date = new DateTime($year + 1 . '-01-'. $parameters->day_due_date);
 						$due_date = $due_date->format('Y-m-d');
 					else:
-	                	$due_date = new DateTime($year . '-' . $nextMonth . '-20');
+	                	$due_date = new DateTime($year . '-' . $nextMonth . '-' . $parameters->day_due_date);
 	                	$due_date = $due_date->format('Y-m-d');
 					endif;					
 
@@ -175,7 +184,7 @@ class MonthsController extends BaseController {
 						'casted' => 0,
 						'cost' => 0,
 						'due_date' => $due_date,
-						'user_id' => Auth::id(),
+						'user_id' => $userId,
 						'created_at' => DB::raw('NOW()'),
 						'updated_at' => DB::raw('NOW()'),													                     	
 					));
@@ -202,6 +211,7 @@ class MonthsController extends BaseController {
 		$input =  array_except(Input::all(), '_method');
 		$year = (int) $input['year'];
 		if ($year > 1000 && $year < 3000):
+			$userId = Auth::id();
 			$start    = (new DateTime($year . '-01-01'))->modify('first day of this month');
 			$end      = (new DateTime($year + 1 . '-01-01'))->modify('first day of this month');
 			$interval = DateInterval::createFromDateString('1 month');
@@ -211,7 +221,7 @@ class MonthsController extends BaseController {
 			foreach ($period as $dt):
 				DB::table('months')
 					->where('month_reference', '=', $dt->format('Y-m-d'))
-					->where('user_id', '=', Auth::id())
+					->where('user_id', '=', $userId)
 					->delete();
 			endforeach;
 

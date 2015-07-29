@@ -96,20 +96,19 @@ class DwellersController extends BaseController {
 		$balance = ceil($increase[0]->total - $decrease[0]->total);
 
 		$sum = DB::table('dweller_expenses')
-					->select(DB::raw('sum(value) as total'))
-					->where('id_dweller', $id)
-					->where('type_expense', 0)
-					->where('type_expense', 1)
-					->where('user_id', '=', Auth::id())
-					->get();
+				 ->select(DB::raw('sum(value) as total'))
+			  	 ->where('id_dweller', $id)
+		 		 ->where('type_expense', 0)
+			 	 ->where('user_id', '=', Auth::id())
+		 		 ->get();
 
 		$expenses = DB::table('dweller_expenses')
-								->select(DB::raw('*, sum(value) as total'))
-								->where('id_dweller', $id)
-								->where('user_id', '=', Auth::id())
-								->groupBy('date_expense')
-								->orderBy('date_expense', 'desc')
-								->get();
+					  ->select(DB::raw('*, sum(value) as total'))
+		  			  ->where('id_dweller', $id)
+					  ->where('user_id', '=', Auth::id())
+					  ->groupBy('date_expense')
+					  ->orderBy('date_expense', 'desc')
+		  			  ->get();
 
 		return View::make('dwellers.show', compact('dweller', 'expenses', 'balance', 'sum'));
 	}

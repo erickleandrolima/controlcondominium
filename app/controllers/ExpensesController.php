@@ -185,6 +185,7 @@ class ExpensesController extends BaseController {
 		$total = DB::table('expenses')
 				   ->select(DB::raw('SUM(value) AS total'))
 				   ->whereRaw(DB::raw("date_reference BETWEEN DATE_FORMAT(  '{$date}',  '%Y-%m-01' ) AND LAST_DAY(  '{$date}' )"))
+				   ->where('user_id', Auth::id())
 				   ->groupBy(DB::raw('YEAR(date_reference) , MONTH(date_reference)'))
 				   ->get();
 		

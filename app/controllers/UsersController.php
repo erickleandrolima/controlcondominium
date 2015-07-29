@@ -166,4 +166,9 @@ class UsersController extends BaseController {
                 ->withInput();
         endif;                     
     }
+
+    public function login()
+    {
+        return View::make('users.login');
+    }
 }

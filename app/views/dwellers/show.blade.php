@@ -4,6 +4,10 @@
 
 <p>{{ link_to_route('dwellers.index', Lang::get('app.returnList'), null, array('class'=>'btn btn-lg btn-primary')) }}</p>
 
+<p>
+  {{ link_to('dweller/' . $dweller->id . '/history' , Lang::get('app.historyPayment'), 'class="cast btn btn-lg btn-danger"') }}  
+</p>
+
 <table class="table table-striped">
 	<thead>
 		<tr>
@@ -76,9 +80,6 @@
           @endif 
         </strong> 
       </td>
-      <td>
-        {{ link_to('dweller/' . $dweller->id . '/history' , Lang::get('app.historyPayment'), 'class="cast btn btn-danger"') }}
-      </td> 
     </tr>
 	</tbody>
 </table>
