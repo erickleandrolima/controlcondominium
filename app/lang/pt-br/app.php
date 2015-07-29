@@ -69,4 +69,6 @@ return array(
 
 	'dueDate' => 'Data de vencimento',
 
+	'download' => 'Imprimir relatório',
+
 );

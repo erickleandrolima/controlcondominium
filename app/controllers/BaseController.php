@@ -27,19 +27,6 @@ class BaseController extends Controller {
 		endif;
 	}
 
-	/**
-	 * Setup the layout used by the controller.
-	 *
-	 * @return void
-	 */
-	protected function setupLayout()
-	{
-		if ( ! is_null($this->layout))
-		{
-			$this->layout = View::make($this->layout);
-		}
-	}
-
 	public static function getMonthName($date)
 	{
 		$month =  substr($date, 5, 2);
@@ -83,6 +70,7 @@ class BaseController extends Controller {
 			'name.required' => 'nome é obrigatório',
 			'situation.required' => 'situação é obrigatória',
 			'number_apartament.required' => 'número do apartamento é obrigatório, cadastre todos os apartamentos antes de cadastrar os moradores',			
+			'role_id.required' => 'O campo grupo do usuário é obrigatório',
 		);
 	}
 

@@ -119,4 +119,21 @@ class CategoriesController extends BaseController {
 										->with('success', '<strong>Sucesso</strong> Registro excluído!');
 	}
 
+	public function getCategories()
+	{
+		$allCategories = DB::table('categories')
+							->select('*')
+							->where('user_id', '=', Auth::id())
+							->get();
+
+		$categories[0] = 'Selecione uma categoria';
+
+		foreach($allCategories as $category) {
+    		$categories[$category->id] = $category->name;
+		}
+
+		return $categories;
+
+	}
+	
 }

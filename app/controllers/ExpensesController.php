@@ -38,9 +38,9 @@ class ExpensesController extends BaseController {
 	 */
 	public function create()
 	{
-		$months = $this->getOpenMonths();
+		$months = App::make('MonthsController')->getOpenMonths();
 
-		$categories = $this->getCategories();
+		$categories = App::make('CategoriesController')->getCategories();
 
 		$statusList = $this->getStatusList();
 
@@ -100,11 +100,11 @@ class ExpensesController extends BaseController {
 	{
 		$expense = $this->expense->find($id);
 
-		$months = $this->getOpenMonths();
+		$months = App::make('MonthsController')->getOpenMonths();
 
-		$categories = $this->getCategories();
+		$categories = App::make('CategoriesController')->getCategories();
 
-		$month_id = $this->getMonthId($expense);
+		$month_id = App::make('MonthsController')->getMonthId($expense);
 
 		$statusList = $this->getStatusList();
 
@@ -131,23 +131,18 @@ class ExpensesController extends BaseController {
 
 		if ($validation->passes())
 		{
-
 			$expense = $this->expense->find($id);							    
 			
 			if(!is_null(Input::file('document'))):
-
-				$destinationPath = 'public/uploads/'; // upload path
-		      	$extension = Input::file('document')->getClientOriginalExtension(); // getting image extension
-			    $fileName = rand(11111,99999).'.'.$extension; // renameing image
-			    Input::file('document')->move($destinationPath, $fileName); // uploading file to given path
-			    $input['document'] = 'uploads/' . $fileName;
-			
+				$upload = new Upload(Input::file('document'));
+				$input['document'] = $upload->upload();
 			else:
 			    $input['document'] = $expense->document;
 			endif;    
 
 			$expense->update($input);
-			$this->updateMonthId($input, $id);
+			
+			App::make('MonthsController')->updateMonthId($input, $id);
 
 			return Redirect::route('expenses.index')
 											->with('success', '<strong>Sucesso</strong> Registro atualizado!');
@@ -171,192 +166,6 @@ class ExpensesController extends BaseController {
 
 		return Redirect::route('expenses.index')
 										->with('success', '<strong>Sucesso</strong> Registro excluído!');
-	}
-
-	/**
-	 * Sum expenses for month determine.
-	 *
-	 * @param  date  $date
-	 * @return Response
-	 */
-
-	public function sum($date)
-	{
-		$total = DB::table('expenses')
-				   ->select(DB::raw('SUM(value) AS total'))
-				   ->whereRaw(DB::raw("date_reference BETWEEN DATE_FORMAT(  '{$date}',  '%Y-%m-01' ) AND LAST_DAY(  '{$date}' )"))
-				   ->where('user_id', Auth::id())
-				   ->groupBy(DB::raw('YEAR(date_reference) , MONTH(date_reference)'))
-				   ->get();
-		
-		return $total;				   
-	}
-
-
-	/**
-	 * Pay expense for determine dweller.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-
-	public function pay($id, $date)
-	{
-		DB::table('dweller_expenses')
-		->where('id_dweller', $id)
-		->where('date_expense', $date)
-		->update(array('status_expense' => 1, 'updated_at' => DB::raw('NOW()')));
-
-		return Redirect::route('dwellers.show', $id);
-	}
-
-	public function parcialPay($idExpense, $idDweller, $credit)
-	{
-		$input =  array_except(Input::all(), '_method');
-		$credit += $input['value'];
-		if($this->checkParcialPay($idExpense, $input['value'])):
-			DB::table('dweller_expenses')
-			->where('id', $idExpense)
-			->update(array('credit' => $credit));
-			return Redirect::route('dwellers.show', $idDweller)
-						 ->with('success', '<strong>Sucesso</strong> pagamento parcial realizado!');
-		else:
-			return Redirect::route('dwellers.show', $idDweller)
-						->with('message', '<strong>Erro</strong> o valor inserido é maior que o devido!');
-		endif;	
-	}
-
-	public function checkParcialPay($idExpense, $value)
-	{
-		$expense = DB::table('dweller_expenses')
-							->where('id', $idExpense)
-							->get();
-		
-		$balance = ceil($expense[0]->value - $expense[0]->credit);
-		$value = ceil($value);
-
-		if ($value > $balance):
-			return false;
-			elseif(($value - $balance) == 0):
-				$this->pay($expense[0]->id_dweller, $expense[0]->date_expense);							
-		endif;
-
-		return true;
-	}
-
-	public function updateMonthId($expense, $id)
-	{
-		$month = DB::table('months')
-		  			->where('month_reference', $expense['date_reference'])
-		  			->get();
-		
-		DB::table('expenses')
-		->where('id', $id)
-		->update(['month_id' => $month[0]->id]);  			
-
-		return true;
-	}
-
-	/**
-	 * reverse payment for determine month
-	 *
-	 * @param  id    $dwellerId
-	 * @param  date  $date
-	 * @return Response
-	 */
-
-	public function reversePayment($dwellerId, $date)
-	{
-		DB::table('dweller_expenses')->where('date_expense', $date)
-									 ->where('id_dweller', $dwellerId)
-									 ->update(array(
-									 	'status_expense' => 0,
-									 	'credit' => 0
-								 	  ));
-
-		return Redirect::route('dwellers.show', $dwellerId)
-						->with('success', '<strong>Sucesso</strong> Pagamento estornado com sucesso!');
-	}
-
-	public function getCategories()
-	{
-		$allCategories = DB::table('categories')
-							->select('*')
-							->where('user_id', '=', Auth::id())
-							->get();
-
-		$categories[0] = 'Selecione uma categoria';
-
-		foreach($allCategories as $category) {
-    		$categories[$category->id] = $category->name;
-		}
-
-		return $categories;
-
-	}
-
-	public function getOpenMonths()
-	{
-		$Allmonths = DB::table('months')
-					 ->select('*')
-					 ->orderBy('month_reference', 'desc')
-					 ->where('casted', '=', 0)
-					 ->where('user_id', '=', Auth::id())
-					 ->get();
-
-		$months[0] = 'Selecione o mês de referência';
-
-		foreach($Allmonths as $month) {
-    		$months[$month->month_reference] = $month->month_name;
-		}
-
-		return $months;
-
-	}
-
-	public function getMonthsForExpensesReport()
-	{
-		$Allmonths = DB::table('months')
-					 ->select('*')
-					 ->orderBy('month_reference', 'desc')
-					 ->where('user_id', '=', Auth::id())
-					 ->get();
-
-		$months[0] = 'Todos os meses';
-
-		foreach($Allmonths as $month) {
-    		$months[$month->month_reference] = $month->month_name;
-		}
-
-		return $months;
-
-	}
-
-	public function getMonths()
-	{
-		$Allmonths = DB::table('months')
-					 ->select('*')
-					 ->orderBy('month_reference', 'desc')
-					 ->where('user_id', '=', Auth::id())
-					 ->get();
-
-		$months[0] = 'Selecione o mês de referência';
-
-		foreach($Allmonths as $month) {
-    		$months[$month->month_reference] = $month->month_name;
-		}
-
-		return $months;
-
-	}
-
-	public function getMonthId($expense)
-	{
-		$month = DB::table('months')
-				 ->where('month_reference', $expense['date_reference'])
-				 ->get(); 
-
-		return $month[0]->id;
 	}
 
 	public function getStatusList()

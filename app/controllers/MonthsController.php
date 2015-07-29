@@ -28,115 +28,6 @@ class MonthsController extends BaseController {
 	}
 
 	/**
-	 * Cast expense for month
-	 *
-	 * @param  date  $date
-	 * @return Response
-	 */
-	public function cast($date)
-	{
-		// sum total expenses for this month
-		$expense = App::make('ExpensesController')->sum($date);
-
-		if (!empty($expense)):
-
-			$userId = Auth::id();
-
-			$parameters = Parameter::where('user_id', Auth::id())->first();
-
-			// calc total and divider for total dwellers
-
-			$total_by_dweller = $expense[0]->total / $parameters->number_apartments;
-
-			// total of empty apartments
-
-			$total_empty = Dweller::where('situation', 0)->count();
-
-			// if exists empty apartments, change the calc
-
-			if ($total_empty > 0):
-
-				$halfAmount = $total_by_dweller / 2;
-
-				$rest = $halfAmount * $total_empty;
-
-				$newTotal = $rest + $expense[0]->total;
-
-				// calc total and divider for total dwellers
-				$total_by_dweller = $newTotal / $parameters->number_apartments;
-
-			endif;	
-
-			// update status this month to released and updated cost value for this month
-			$this->castMonth($date, $total_by_dweller);
-
-			foreach (Dweller::where('user_id', '=', $userId)->get() as $dweller):
-
-				//throw expenses for each dweller
-				DB::table('dweller_expenses')
-					->insert(
-						array(
-							'id_dweller' => $dweller->id,
-							'date_expense' => $date,
-							// verify if apartament is occupied, when not divide this value for half
-							'value' => ($dweller->situation == 1) ? $total_by_dweller : $halfAmount,
-							'user_id' => $userId,
-						)
-				);
-
-			endforeach;
-
-			return Redirect::route('months.index')
-											->with('success', '<strong>Sucesso</strong> Lançamento realizado!');
-		else:
-			
-			return Redirect::route('months.index')
-							->with('message', 
-								'<strong>Erro</strong> Não há despesas para lançar para o mês escolhido: ' . 
-								BaseController::getMonthNameExtension($date, 2));
-		endif;									
-
-		return Redirect::route('months.index')
-										->with('message', 'Você precisa cadastrar a data de vencimento antes de lançar');
-	}
-
-	/**
-	 * Check cast for determine month
-	 *
-	 * @param  date  $date
-	 * @return Response
-	 */
-
-	public function castMonth($date, $value)
-	{
-		DB::table('months')->where('month_reference', $date)->update(array('casted' => 1, 'cost' => $value));
-
-		return true;
-	}
-
-	/**
-	 * rebase calc for determine month
-	 *
-	 * @param  date  $date
-	 * @return Response
-	 */
-
-	public function rebaseCalc($date)
-	{
-		DB::table('dweller_expenses')
-			->where('date_expense', $date)
-			->where('user_id', Auth::id())
-			->delete();
-
-		DB::table('months')
-			->where('month_reference', $date)
-			->update(['casted' => 0, 'cost' => 0]);
-
-		return Redirect::route('months.index')
-						->with('success', '<strong>Sucesso</strong> Recalcule o mês escolhido!');
-	}
-
-	/**
 	 * generate months for determine year
 	 *
 	 * @param  date  $year
@@ -232,4 +123,92 @@ class MonthsController extends BaseController {
 			 				->with('message', '<strong>Erro</strong> O ano digitado é inválido: ' . $year);			 				
 		endif;			 				
 	}
+
+	public function getMonthsForExpensesReport()
+	{
+		$Allmonths = DB::table('months')
+					 ->select('*')
+					 ->orderBy('month_reference', 'asc')
+					 ->where('user_id', '=', Auth::id())
+					 ->get();
+
+		$months[0] = 'Todos os meses';
+
+		foreach($Allmonths as $month) {
+    		$months[$month->month_reference] = $month->month_name;
+		}
+
+		return $months;
+
+	}
+
+	public function getMonths()
+	{
+		$Allmonths = DB::table('months')
+					 ->select('*')
+					 ->orderBy('month_reference', 'desc')
+					 ->where('user_id', '=', Auth::id())
+					 ->get();
+
+		$months[0] = 'Selecione o mês de referência';
+
+		foreach($Allmonths as $month) {
+    		$months[$month->month_reference] = $month->month_name;
+		}
+
+		return $months;
+
+	}
+
+	public function getMonthId($expense)
+	{
+		$month = DB::table('months')
+				 ->where('month_reference', $expense['date_reference'])
+				 ->get(); 
+
+		return $month[0]->id;
+	}
+
+	public function getOpenMonths()
+	{
+		$Allmonths = DB::table('months')
+					 ->select('*')
+					 ->orderBy('month_reference', 'desc')
+					 ->where('casted', '=', 0)
+					 ->where('user_id', '=', Auth::id())
+					 ->get();
+
+		$months[0] = 'Selecione o mês de referência';
+
+		foreach($Allmonths as $month) {
+    		$months[$month->month_reference] = $month->month_name;
+		}
+
+		return $months;
+
+	}
+
+	public function getMonthsForMuralReport()
+	{
+		return DB::table('months')
+					 ->select('*')
+					 ->orderBy('month_reference', 'asc')
+					 ->where('user_id', '=', Auth::id())
+					 ->simplePaginate(10);
+
+	}
+
+	public function updateMonthId($expense, $id)
+	{
+		$month = DB::table('months')
+		  			->where('month_reference', $expense['date_reference'])
+		  			->get();
+		
+		DB::table('expenses')
+		->where('id', $id)
+		->update(['month_id' => $month[0]->id]);  			
+
+		return true;
+	}
+
 }

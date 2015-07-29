@@ -34,5 +34,4 @@ return array(
 	'referenceDate' => 'Data de referência',
 
 	'dueDate' => 'Data de vencimento',
-
 );

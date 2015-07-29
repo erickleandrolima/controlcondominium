@@ -17,21 +17,13 @@ class ReportsController extends BaseController {
         return View::make('reports.index');
 	}
 
-	public function mural()
-	{
-		$select = App::make('ExpensesController')->getMonths();
-
-		return View::make('reports.muralFilter', compact('select'));
-	}
-
 	public function muralFilter()
 	{
-		
 		$input = array_except(Input::all(), '__method');
 
 		$expenses = DB::table('expenses')
 					->select('*')
-					->where('date_reference', $input['filter'])
+					->where('date_reference', $input['date'])
 					->where('user_id', Auth::id())
 					->get();
 
@@ -44,11 +36,11 @@ class ReportsController extends BaseController {
 					->orderBy('date_expense')
 					->get();
 
-		$month_reference = BaseController::getMonthNameExtension($input['filter'], 2);
+		$month_reference = BaseController::getMonthNameExtension($input['date'], 2);
 
 		$informations = DB::table('months')
 						->select(DB::raw('due_date, cost'))
-						->where('month_reference', $input['filter'])
+						->where('month_reference', $input['date'])
 						->where('user_id', Auth::id())
 						->get();
 		
@@ -62,21 +54,7 @@ class ReportsController extends BaseController {
 
 		$pdf = App::make('dompdf');
 		$pdf->loadHtml($html);
-		return $pdf->stream();
-	}
-
-	public function debtsDwellers()
-	{
-		$allDwellers = DB::table('dwellers')->select('*')->orderBy('number_apartament', 'asc')->get();
-
-		$select[0] = 'Selecione o morador';
-
-		foreach($allDwellers as $dweller) {
-    		$select[$dweller->id] = $dweller->number_apartament;
-		}
-
-		return View::make('reports.debtsDwellersFilter', compact('select'));
-
+		return $pdf->download(BaseController::getMonthNameExtension($input['date'], 2));
 	}
 
 	public function debtsDwellersFilter() 
@@ -87,16 +65,17 @@ class ReportsController extends BaseController {
 						->select('*')
 						->join('months', 'months.month_reference', '=', 'dweller_expenses.date_expense')
 						->join('dwellers', 'dwellers.id', '=', 'dweller_expenses.id_dweller')
-						->where('id_dweller', $input['filter'])
+						->where('id_dweller', $input['dweller'])
 						->where('dweller_expenses.user_id', Auth::id())
 						->where('status_expense', '0')
 						->get();
+
 
 		$total = DB::table('dweller_expenses')
 						->select(DB::raw('sum(cost) as debt'))
 						->join('months', 'months.month_reference', '=', 'dweller_expenses.date_expense')
 						->join('dwellers', 'dwellers.id', '=', 'dweller_expenses.id_dweller')
-						->where('id_dweller', $input['filter'])
+						->where('id_dweller', $input['dweller'])
 						->where('dweller_expenses.user_id', Auth::id())
 						->where('status_expense', '0')
 						->get();					
@@ -104,12 +83,12 @@ class ReportsController extends BaseController {
 		$html = View::make('reports.debtsDwellers', compact('expenses', 'total'));				
 		$pdf = App::make('dompdf');
 		$pdf->loadHtml($html);
-		return $pdf->stream();
+		return $pdf->download('Relatório de débitos - ' . $expenses[0]->name);
 	}
 
 	public function openExpenses()
 	{
-		$select = App::make('ExpensesController')->getMonthsForExpensesReport();
+		$select = App::make('MonthsController')->getMonthsForExpensesReport();
 
 		return View::make('reports.openExpensesFilter', compact('select'));
 	}

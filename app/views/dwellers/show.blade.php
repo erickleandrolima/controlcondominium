@@ -54,13 +54,13 @@
 					@endif
 				</td>
 				<td>
-          {{ Form::open(array( 'class' => 'parcialPay', 'style' => 'display: inline-block;', 'method' => 'POST', 'action' => array('ExpensesController@parcialPay', $expense->id . '/' . $dweller->id . '/'. $expense->credit))) }}
+          {{ Form::open(array( 'class' => 'parcialPay', 'style' => 'display: inline-block;', 'method' => 'POST', 'action' => array('MoneyController@parcialPay', $expense->id . '/' . $dweller->id . '/'. $expense->credit))) }}
             {{ Form::text('value', Input::old('value'), array( 'style' => 'margin-bottom:10px', 'class'=>'form-control money', 'placeholder'=> Lang::get('app.value'))) }}
             {{ Form::submit(Lang::get('app.parcialPay'), array('class' => 'btn btn-warning')) }}
           {{ Form::close() }}
 				</td>
         <td>
-          {{ Form::open(array( 'style' => 'display: inline-block;', 'method' => 'POST', 'action' => array('ExpensesController@reversePayment', 
+          {{ Form::open(array( 'style' => 'display: inline-block;', 'method' => 'POST', 'action' => array('MoneyController@reversePayment', 
             $dweller->id . '/' . $expense->date_expense))) }}
             {{ Form::submit(Lang::get('app.reversePayment'), array('class' => 'btn btn-warning')) }}
           {{ Form::close() }}

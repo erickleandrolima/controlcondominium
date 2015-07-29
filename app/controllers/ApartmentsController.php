@@ -132,15 +132,27 @@ class ApartmentsController extends BaseController {
 		return Redirect::route('apartments.index');
 	}
 
-	public function getApartments()
+	public function getApartments($assigned = true)
 	{
 		$arr = [];
 
-		if (!empty(Apartment::where('user_id', '=', Auth::id())->where('assigned', 0)->get()->toArray())):
-			foreach (Apartment::where('user_id', '=', Auth::id())->where('assigned', 0)->get()->toArray() as $item):
-				$arr[$item['number_apartment']] = $item['number_apartment'];			
-			endforeach;
-		endif;	
+		if ($assigned):
+
+			if (!empty(Apartment::where('user_id', '=', Auth::id())->where('assigned', $assigned)->get()->toArray())):
+				foreach (Apartment::where('user_id', '=', Auth::id())->where('assigned', $assigned)->get()->toArray() as $item):
+					$arr[$item['number_apartment']] = $item['number_apartment'];			
+				endforeach;
+			endif;	
+
+		else:	
+
+			if (!empty(Apartment::where('user_id', '=', Auth::id())->get()->toArray())):
+				foreach (Apartment::where('user_id', '=', Auth::id())->get()->toArray() as $item):
+					$arr[$item['number_apartment']] = $item['number_apartment'];			
+				endforeach;
+			endif;	
+
+		endif;
 
 		return $arr;
 	}

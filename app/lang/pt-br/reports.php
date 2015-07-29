@@ -20,5 +20,7 @@ return array(
 	'filter' => 'Filtrar',
 
 	'choice' => 'Selecione',
+
+	'generate' => 'Gerar relatório',
 	
 );
