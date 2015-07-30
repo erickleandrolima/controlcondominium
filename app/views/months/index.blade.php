@@ -58,8 +58,8 @@
 					@if ($month->casted == 1)
 						<td>
 							{{ Form::open(array('style' => 'display: inline-block;', 'method' => 'post', 'url' => 'report/mural')) }}
-								{{ Form::hidden('filter', $month->month_reference) }}
-							    {{ Form::submit(Lang::get('app.print'), array('class' => 'btn btn-primary')) }}
+								{{ Form::hidden('date', $month->month_reference) }}
+							    {{ Form::submit(Lang::get('app.download'), array('class' => 'btn btn-success')) }}
 							{{ Form::close() }}
 						</td>
 					@else

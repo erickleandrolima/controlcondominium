@@ -128,7 +128,7 @@ class MonthsController extends BaseController {
 	{
 		$Allmonths = DB::table('months')
 					 ->select('*')
-					 ->orderBy('month_reference', 'desc')
+					 ->orderBy('month_reference', 'asc')
 					 ->where('user_id', '=', Auth::id())
 					 ->get();
 

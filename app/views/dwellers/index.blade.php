@@ -34,6 +34,10 @@
                         {{ Form::close() }}
                         {{ link_to_route('dwellers.edit', Lang::get('app.edit'), array($dweller->id), array('class' => 'btn btn-info')) }}
                     	{{ link_to_route('dwellers.show', Lang::get('dwellers.show'), $dweller->id, array('class' => 'btn btn-warning')) }}
+                		{{ Form::open(array('style' => 'display: inline-block;', 'method' => 'post', 'url' => 'report/debtsDwellers')) }}
+                			{{ Form::hidden('dweller', $dweller->id) }}
+                		    {{ Form::submit(Lang::get('app.download'), array('class' => 'btn btn-success')) }}
+                		{{ Form::close() }}
                     </td>
 				</tr>
 			@endforeach

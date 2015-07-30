@@ -199,4 +199,12 @@ class DwellersController extends BaseController {
 		return Redirect::route('dwellers.index')
 										->with('success', '<strong>Sucesso</strong> Registro excluído!');
 	}
+
+	public function getDwellersForDebtsReport()
+	{
+		return 	DB::table('dwellers')
+				  ->select('*')
+				  ->orderBy('number_apartament', 'asc')
+				  ->simplePaginate(10);
+	}
 }
