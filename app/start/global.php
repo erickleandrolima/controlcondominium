@@ -79,3 +79,12 @@ App::down(function()
 */
 
 require app_path().'/filters.php';
+
+Dotenv::load(__DIR__ .'/../');
+ 
+$env = $app->detectEnvironment(
+    function()
+    {
+        return getenv('APP_ENV');
+    }
+);

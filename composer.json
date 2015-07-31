@@ -8,7 +8,8 @@
 		"laravel/framework": "4.2.*",
 		"dollar/generators": "dev-master",
 		"barryvdh/laravel-dompdf": "0.4.*",
-		"zizaco/entrust": "1.2.*@dev"
+		"zizaco/entrust": "1.2.*@dev",
+		"vlucas/phpdotenv": "1.0.*@dev"
 	},
 	"autoload": {
 		"classmap": [
