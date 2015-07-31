@@ -2,22 +2,44 @@
 
 @section('main')
 
-<h1>Relatórios de despesas em aberto</h1>
+<h1> Relatório de meses com despesas em aberto </h1>
 
-{{ Form::open(array('style' => 'display: inline-block;', 'method' => 'POST')) }}
+{{ $months->links(); }}
 
-    <div class="form-group">
-        {{ Form::label(Lang::get('reports.filter'), Lang::get('reports.choice'), array('class'=>'col-md-3 control-label margin-top-5')) }}
-	    <div class="col-sm-6">
-		    {{Form::select('filter', $select, 0)}}
-	    </div>
-    </div>
+@if (count($months))
+	
+	{{ BaseController::getDefaultDataFilter() }}
 
-    <br/>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>{{ Lang::get('months.referenceDate') }}</th>
+				<th>{{ Lang::get('months.monthAndYear') }}</th>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+			</tr>
+		</thead>
 
-    {{ Form::submit(Lang::get('reports.generate'), array('class' => 'btn btn-success')) }}
+		<tbody>
+			@foreach ($months as $month)
+				<tr>
+					<td>{{{ $month->month_reference }}}</td>
+					<td>{{{ $month->month_name }}}</td>
+					<td>
+						{{ Form::open(array('style' => 'display: inline-block;', 'method' => 'post', 'url' => 'report/openExpenses')) }}
+							{{ Form::hidden('date', $month->month_reference) }}
+						    {{ Form::submit(Lang::get('reports.generate'), array('class' => 'btn btn-success')) }}
+						{{ Form::close() }}
+					</td>
+				</tr>
+			@endforeach
+		</tbody>
+	</table>
 
+	{{ $months->links(); }}
 
-{{ Form::close() }}
+@else
+	{{ Lang::get('app.notFoundData') }}
+@endif
 
 @stop

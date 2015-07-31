@@ -88,19 +88,19 @@ class ReportsController extends BaseController {
 
 	public function openExpenses()
 	{
-		$select = App::make('MonthsController')->getMonthsForExpensesReport();
+		$months = App::make('MonthsController')->getMonthsForExpensesReport();
 
-		return View::make('reports.openExpensesFilter', compact('select'));
+		return View::make('reports.openExpensesFilter', compact('months'));
 	}
 
 	public function openExpensesFilter()
 	{
 		$input = array_except(Input::all(), '__method');
 
-		if (!empty($input['filter'])):
+		if (!empty($input['date'])):
 				$expenses = DB::table('expenses')
 								->join('months', 'months.month_reference', '=', 'expenses.date_reference')
-								->where('date_reference', $input['filter'])
+								->where('date_reference', $input['date'])
 								->where('expenses.user_id', Auth::id())
 								->where('status', 0)
 								->get();
@@ -108,7 +108,7 @@ class ReportsController extends BaseController {
 				$total = DB::table('expenses')
 							->select(DB::raw('sum(value) as debt'))
 							->join('months', 'months.month_reference', '=', 'expenses.date_reference')
-							->where('date_reference', $input['filter'])
+							->where('date_reference', $input['date'])
 							->where('expenses.user_id', Auth::id())
 							->where('status', 0)
 							->get();
@@ -136,7 +136,7 @@ class ReportsController extends BaseController {
 		$html = View::make('reports.openExpenses', compact('expenses', 'total', 'all'));				
 		$pdf = App::make('dompdf');
 		$pdf->loadHtml($html);
-		return $pdf->stream();	
+		return $pdf->download('Despesas em aberto - ' . BaseController::getMonthNameExtension($input['date'], 2));	
 	}
 
 }

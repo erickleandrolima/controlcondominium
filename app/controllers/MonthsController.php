@@ -126,19 +126,11 @@ class MonthsController extends BaseController {
 
 	public function getMonthsForExpensesReport()
 	{
-		$Allmonths = DB::table('months')
-					 ->select('*')
-					 ->orderBy('month_reference', 'asc')
-					 ->where('user_id', '=', Auth::id())
-					 ->get();
-
-		$months[0] = 'Todos os meses';
-
-		foreach($Allmonths as $month) {
-    		$months[$month->month_reference] = $month->month_name;
-		}
-
-		return $months;
+		return  DB::table('months')
+				  ->select('*')
+				  ->orderBy('month_reference', 'asc')
+				  ->where('user_id', '=', Auth::id())
+				  ->simplePaginate(10);
 
 	}
 
