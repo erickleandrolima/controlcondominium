@@ -20,7 +20,7 @@
 	<tbody>
 		<tr>
 			<td>{{{ $dweller->name }}}</td>
-			<td>{{{ $dweller->situation }}}</td>
+			<td>{{{ ($dweller->situation == 1) ? 'Ocupado' : 'Desocupado' }}}</td>
 			<td>{{{ $dweller->number_apartament }}}</td>
 		</tr>
 	</tbody>
@@ -29,18 +29,19 @@
 <table id="expenses" class="table table-striped">
 	<thead>
 		<tr>
-			<th>{{ Lang::get('app.months') }}</th>
+			<th>{{ Lang::get('app.month') }}</th>
 			<th>{{ Lang::get('app.value') }}</th>
 			<th>{{ Lang::get('app.status') }}</th>
       <th>{{ Lang::get('app.parcialPay') }}</th>
 			<th>{{ Lang::get('app.reversePayment') }}</th>
+      <th>{{ Lang::get('app.isEmptyApartment')}} </th>
 		</tr>
 	</thead>
 
 	<tbody>
 		@foreach($expenses as $expense)
 			<tr>
-				<td>{{{ substr($expense->date_expense, 0, 7) }}}</td>
+				<td>{{{ BaseController::getMonthNameExtension($expense->date_expense, 2) }}}</td>
         @if ($expense->status_expense == 0)
 				  <td>R$ {{{ number_format(ceil((float)$expense->total - $expense->credit), 2, ',', '') }}}</td>
         @else  
@@ -56,15 +57,26 @@
 				<td>
           {{ Form::open(array( 'class' => 'parcialPay', 'style' => 'display: inline-block;', 'method' => 'POST', 'action' => array('MoneyController@parcialPay', $expense->id . '/' . $dweller->id . '/'. $expense->credit))) }}
             {{ Form::text('value', Input::old('value'), array( 'style' => 'margin-bottom:10px', 'class'=>'form-control money', 'placeholder'=> Lang::get('app.value'))) }}
-            {{ Form::submit(Lang::get('app.parcialPay'), array('class' => 'btn btn-warning')) }}
+            {{ Form::submit(Lang::get('app.parcialPay'), array('class' => 'btn btn-danger')) }}
           {{ Form::close() }}
 				</td>
         <td>
           {{ Form::open(array( 'style' => 'display: inline-block;', 'method' => 'POST', 'action' => array('MoneyController@reversePayment', 
             $dweller->id . '/' . $expense->date_expense))) }}
-            {{ Form::submit(Lang::get('app.reversePayment'), array('class' => 'btn btn-warning')) }}
+            {{ Form::submit(Lang::get('app.reversePayment'), array('class' => 'btn btn-danger')) }}
           {{ Form::close() }}
         </td>
+        <td>
+          @if ($expense->apartmentEmpty == 0)
+            {{ Form::open(array( 'method' => 'POST', 'action' => array('MoneyController@emptyApartmentPayment'))) }}
+              {{ Form::hidden('id_dweller', $dweller->id) }}
+              {{ Form::hidden('date_expense', $expense->date_expense) }}
+              {{ Form::submit(Lang::get('app.yes'), array('class' => 'btn btn-danger')) }}
+            {{ Form::close() }}
+          @else
+            <btn class="btn btn-primary">O apartamento <br> estava vazio <br> nesta data</btn>
+          @endif  
+        </td> 
 			</tr>
 		@endforeach	
     <tr>

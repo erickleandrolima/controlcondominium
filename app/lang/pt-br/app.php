@@ -39,6 +39,8 @@ return array(
 
 	'months' => 'Meses',
 
+	'month' => 'Mês',
+
 	'value' => 'Valor',
 
 	'returnList' => 'Retornar para lista principal',
@@ -72,5 +74,9 @@ return array(
 	'download' => 'Imprimir relatório',
 
 	'profilePhoto' => 'Imagem do perfil',
+
+	'isEmptyApartment' => 'Apartamento Vazio?',
+
+	'yes' => 'Sim'
 
 );

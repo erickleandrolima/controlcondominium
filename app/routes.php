@@ -41,6 +41,8 @@ Route::post('expense/parcialPay/{idExpense}/{idDweller}/{credit}', 'MoneyControl
 
 Route::post('expense/reversePayment/{idDweller}/{date}', 'MoneyController@reversePayment');
 
+Route::post('expense/emptyApartmentPayment', 'MoneyController@emptyApartmentPayment');
+
 Route::resource('categories', 'CategoriesController');
 
 Route::resource('categories', 'CategoriesController');

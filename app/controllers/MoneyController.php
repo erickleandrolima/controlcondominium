@@ -228,4 +228,23 @@ class MoneyController extends BaseController {
 		return View::make('dwellers.history', compact('dweller', 'expenses', 'balance', 'sum'));
 	}
 
+	public function emptyApartmentPayment()
+	{
+		$input = Input::all();
+
+		$expense = DwellerExpenses::where('user_id', Auth::id())
+					   ->where('id_dweller', $input['id_dweller'])
+					   ->where('date_expense', $input['date_expense'])
+					   ->first();
+
+		$newValue = $expense->value / 2;
+		$expense->value = $newValue;
+		$expense->apartmentEmpty = 1;
+		$expense->save();
+
+		return Redirect::route('dwellers.show', $input['id_dweller'])
+					   ->with('success', 'Valor da despesa foi redefinida para o mês ' . BaseController::getMonthNameExtension($input['date_expense'], 2));	
+
+	}
+
 }
