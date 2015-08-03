@@ -59,6 +59,11 @@
   <aside class="side-bar">
     <nav>
         <ul>
+          <li> 
+              @if (!is_null($image = ParametersController::getImageProfile()))
+                <img src="{{ $image }}" width="200">
+              @endif 
+          </li>  
           <li> <i class="fa red fa-calendar"></i> <a href="months"><?php echo Lang::get('months.title') ?> </a></li>
           <li> <i class="fa blue fa-users"></i> <a href="dwellers"><?php echo Lang::get('dwellers.title') ?></a></li>
           <li> <i class="fa green fa-money"></i> <a href="expenses"><?php echo Lang::get('expenses.title') ?></a></li>

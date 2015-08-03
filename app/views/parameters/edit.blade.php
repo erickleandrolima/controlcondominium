@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-md-10 col-md-offset-2">
-        <h1>Edit Parameter</h1>
+        <h1>Atualizar Parâmetros</h1>
 
         @if ($errors->any())
         	<div class="alert alert-danger">
@@ -16,9 +16,18 @@
     </div>
 </div>
 
-{{ Form::model($parameter, array('class' => 'form-horizontal', 'method' => 'PATCH', 'route' => array('parameters.update', $parameter->id))) }}
+{{ Form::model($parameter, array('class' => 'form-horizontal', 'files' => 'true', 'method' => 'PATCH', 'route' => array('parameters.update', $parameter->id))) }}
 
         {{ Form::hidden('user_id', Auth::id()) }}
+
+        @if (!is_null($path))
+            <div class="form-group">
+                <label class="col-md-2 control-label">Imagem atual do perfil</label>
+                <div class="col-sm-10">
+                   <img src="{{ $path }}">
+                </div>
+            </div>
+        @endif
 
         <div class="form-group">
             {{ Form::label(Lang::get('parameters.numberApartments'), Lang::get('parameters.numberApartments'), array('class'=>'col-md-2 control-label')) }}
@@ -38,6 +47,13 @@
             {{ Form::label(Lang::get('parameters.dayDueDate'), Lang::get('parameters.dayDueDate') , array('class'=>'col-md-2 control-label')) }}
             <div class="col-sm-10">
               {{ Form::text('day_due_date', Input::old('day_due_date'), array('class'=>'form-control', 'placeholder'=>'Due_date')) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ Form::label(Lang::get('app.profilePhoto'), Lang::get('app.profilePhoto'), array('class'=>'col-md-2 control-label')) }}
+            <div class="col-sm-10">
+                 {{Form::file('image') }}
             </div>
         </div>
 

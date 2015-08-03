@@ -64,7 +64,9 @@ class ParametersController extends BaseController {
 			return Redirect::route('parameters.index');
 		}
 
-		return View::make('parameters.edit', compact('parameter'));
+		$path = (!empty($parameter->image)) ? $parameter->image : null;
+
+		return View::make('parameters.edit', compact('parameter', 'path'));
 	}
 
 	/**
@@ -81,6 +83,14 @@ class ParametersController extends BaseController {
 		if ($validation->passes())
 		{
 			$parameter = $this->parameter->find($id);
+
+			if(!is_null(Input::file('image'))):
+				$upload = new Upload(Input::file('image'));
+				$input['image'] = $upload->upload();
+			else:
+			    $input['image'] = $parameter->image;
+			endif;    
+
 			$parameter->update($input);
 
 			return Redirect::route('parameters.index')
@@ -91,5 +101,11 @@ class ParametersController extends BaseController {
 			->withInput()
 			->withErrors($validation)
 			->with('message', 'There were validation errors.');
+	}
+
+	public static function getImageProfile()
+	{
+		$parameter = Parameter::where('user_id', Auth::id())->first();
+		return (!is_null($parameter)) ? $parameter->image : null;
 	}
 }

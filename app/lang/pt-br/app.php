@@ -71,4 +71,6 @@ return array(
 
 	'download' => 'Imprimir relatório',
 
+	'profilePhoto' => 'Imagem do perfil',
+
 );
